@@ -1,7 +1,7 @@
 package mancala;
 
 import mancala.config.MancalaConfig;
-import mancala.game.GameService;
+import mancala.game.IGameService;
 import mancala.game.logic.state.GameState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +17,12 @@ import java.util.Arrays;
 
 public class JMancalaTests {
     @Autowired
-    private GameService gameService;
+    private IGameService gameService;
 
     @Test
     public void testInitialGameState() {
         // Set up an initial game state
-        GameState initialState = gameService.init(0);
+        GameState initialState = gameService.host();
 
         Assert.isTrue(initialState.pits().length == 14, "Should have 14 pits including stores");
         Assert.isTrue(initialState.pits()[6] == 0, "Player's store is empty initially");
@@ -33,10 +33,11 @@ public class JMancalaTests {
 
     @Test
     public void testMakeMove() {
-        gameService.init(0);
+        GameState gameState = gameService.host();
+        gameService.join(gameState);
 
         // Make a move and get the updated state
-        GameState updatedState = gameService.makeMove(3);
+        GameState updatedState = gameService.makeMove(gameState, 3);
 
         Assert.isTrue(updatedState.pits()[3] == 0, "Pit 3 should be empty after move");
         Assert.isTrue(updatedState.pits()[4] == 7, "Pit 4 should have 1 more stone after move");

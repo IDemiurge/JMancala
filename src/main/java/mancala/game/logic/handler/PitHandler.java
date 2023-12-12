@@ -32,8 +32,7 @@ public class PitHandler {
         } else {
             int winner = outcomeHandler.getWinner(state);
             if (winner > 0) {
-                setup.setWinner(winner);
-                return createGameOverState(0, state, 0);
+                return createGameOverState(0, state, winner);
             }
         }
 
@@ -41,11 +40,11 @@ public class PitHandler {
         int index = state.pitIndex();
 
         //use setup to check!
-        if (setup.isStoreIndex(index) ) {
-            if (setup.isPlayerStoreIndex(index)) {
+        if (setup.isStoreIndex(index)) {
+            if (setup.isThisPlayerStoreIndex(index, state.playerIndex())) {
                 //store
             } else {
-                index= nextPit(index); //ignore opponents' stores
+                index = nextPit(index); //ignore opponents' stores
             }
 
         }
@@ -69,13 +68,15 @@ public class PitHandler {
     private TurnState createNormalTurnState(int stonesLeft, TurnState state, int pitIndex) {
         return createNewTurnState(stonesLeft, state, pitIndex, PLAYER_DONE);
     }
-    private TurnState createGameOverState(int stonesLeft, TurnState state, int pitIndex) {
-        return createNewTurnState(stonesLeft, state, pitIndex, GAME_OVER);
+
+    private TurnState createGameOverState(int stonesLeft, TurnState state, int winner) {
+        return createNewTurnState(stonesLeft, state, winner, GAME_OVER);
     }
+
     private TurnState createNewTurnState(int stonesLeft, TurnState state, int pitIndex, TurnState.StateType type) {
-                 return new TurnState(
-                        state.pits(), stonesLeft, state.playerIndex(),
-                        nextPit(pitIndex), type);
+        return new TurnState(
+                state.pits(), stonesLeft, state.playerIndex(),
+                nextPit(pitIndex), type);
     }
 
     private int nextPit(int pitIndex) {

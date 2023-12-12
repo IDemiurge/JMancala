@@ -7,7 +7,6 @@ import java.util.Arrays;
  */
 public class ClassicMancalaSetup implements MancalaSetup {
 
-    private int playerIndex;
     private int winner = -1;
 
     @Override
@@ -28,13 +27,9 @@ public class ClassicMancalaSetup implements MancalaSetup {
         return false;
     }
 
-    @Override
-    public boolean isPlayerStoreIndex(int index) {
-        return isThisPlayerStoreIndex(index, playerIndex);
-    }
 
     //6 13 20 ...
-    private boolean isThisPlayerStoreIndex(int index, int playerIndex) {
+    public boolean isThisPlayerStoreIndex(int index, int playerIndex) {
         if (playerIndex> pitsPerPlayer()){
             //TODO
         }
@@ -71,14 +66,5 @@ public class ClassicMancalaSetup implements MancalaSetup {
         return this.winner;
     }
 
-    @Override
-    public void setPlayerIndex(int playerIndex) {
-        this.playerIndex = playerIndex;
-    }
-
-    @Override
-    public int playerIndex() {
-        return this.playerIndex;
-    }
 
 }

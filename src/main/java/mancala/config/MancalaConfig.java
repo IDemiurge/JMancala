@@ -8,6 +8,7 @@ import mancala.game.logic.handler.ITipHandler;
 import mancala.game.logic.handler.TipHandler;
 import mancala.game.logic.setup.ClassicMancalaSetup;
 import mancala.game.logic.setup.MancalaSetup;
+import mancala.session.SessionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -38,7 +39,12 @@ public class MancalaConfig {
     }
 
     @Bean
-    public IGameService gameService(){
+    public GameService gameService(){
         return new GameService();
+    }
+
+    @Bean
+    public SessionService sessionService(){
+        return new SessionService();
     }
 }

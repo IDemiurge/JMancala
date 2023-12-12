@@ -2,39 +2,42 @@ package mancala.controller;
 
 import mancala.game.IGameService;
 import mancala.game.logic.state.GameState;
+import mancala.session.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class GameController {
 
     @Autowired
-    private IGameService gameService; // Service to handle game logic
+    SessionService gameSessionService;
 
+    //TODO homeController?
 
-    @GetMapping("/host")
-    public String host(Model model) {
-        GameState gameState = gameService.init(0);
+    // @GetMapping("/")
+    // public String home() {
+    //     return "index";
+    // }
+
+    @GetMapping("/createGame")
+    public String createGame(Model model) {
+        GameState gameState = gameSessionService.createNewGame();
         model.addAttribute("gameState", gameState);
-        return "gameBoard :: boardFragment"; // Returns a Thymeleaf fragment
+        return "game";
     }
-    //TODO game id / room?
-    @GetMapping("/join")
-    public String join(Model model) {
-        GameState gameState = gameService.init(1);
+
+    @GetMapping("/joinGame/{gameId}")
+    public String joinGame(@PathVariable String gameId, Model model) {
+        GameState gameState = gameSessionService.joinGame(gameId);
         model.addAttribute("gameState", gameState);
-        return "gameBoard :: boardFragment"; // Returns a Thymeleaf fragment
+        return "game";
     }
 
-
-    @PostMapping("/makeMove")
-    public String makeMove(@RequestParam("pitIndex") int pitIndex, Model model) {
-        GameState gameState = gameService.makeMove(pitIndex);
+    @PostMapping("/game/{gameId}/move")
+    public String makeMove(@PathVariable String gameId, @RequestParam("pitIndex") int pitIndex, Model model) {
+        GameState gameState = gameSessionService.makeMove(gameId, pitIndex);
         model.addAttribute("gameState", gameState);
-        return "gameBoard :: boardFragment"; // Returns a Thymeleaf fragment
+        return "gameBoard :: boardFragment";
     }
 }

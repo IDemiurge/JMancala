@@ -7,47 +7,48 @@ import mancala.game.logic.state.turn.ITurnState;
 import mancala.game.logic.state.turn.TurnState;
 import mancala.game.logic.state.GameState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import static mancala.game.logic.state.turn.TurnState.StateType.NORMAL;
 
-/**
- * Created by Alexander on 12/11/2023
- */
+@Service
 public class GameService implements IGameService {
 
     @Autowired
     PitHandler pitHandler;
     @Autowired
-    MancalaSetup setup;
-    @Autowired
     ITipHandler tipHandler;
+    @Autowired MancalaSetup setup;
 
-    GameState state; //previous, must be kept
+    public void join(GameState state) {
+        // map.put()
+        //as next player
 
-    public GameState init(int playerIndex) {
-        this.setup.setPlayerIndex(playerIndex);
-        this.state = createGameState(setup);
-        return this.state;
     }
 
     @Override
-    public GameState makeMove(int pitIndex) {
+    public GameState host() {
+        return  createGameState();
+    }
+
+    @Override
+    public GameState makeMove(GameState state, int pitIndex) {
         /*
                 create intermediary gamestates to calculate the final one?
          */
         //TODO validate input?
 
-        ITurnState turnState =  pitHandler.placeStone(createStartTurnState(pitIndex));
+        ITurnState turnState =  pitHandler.placeStone(createStartTurnState(state, pitIndex));
 
         return createNewGameState(turnState);
     }
 
-    private TurnState createStartTurnState(int pitIndex) {
+    private TurnState createStartTurnState(GameState state, int pitIndex) {
         int inHand=state.pits()[pitIndex];
         state.pits()[pitIndex] = 0;
         return new TurnState(state.pits(), inHand, state.currentPlayer(), ++pitIndex, NORMAL);
     }
-    public GameState createGameState(MancalaSetup setup) {
+    public GameState createGameState() {
         return new GameState(setup.startingPits(), 0, tipHandler.getStartingTip());
     }
 
