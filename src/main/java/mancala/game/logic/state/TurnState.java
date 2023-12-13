@@ -6,4 +6,7 @@ public record TurnState(int[] pits, int inHand, int playerIndex, int pitIndex, S
         GAME_OVER,
         NORMAL,
     }
+    public TurnState clone(){
+        return new TurnState(pits, inHand, playerIndex, pitIndex, type);
+    }
 }

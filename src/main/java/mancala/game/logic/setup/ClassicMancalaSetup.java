@@ -6,6 +6,10 @@ import java.util.Arrays;
  * Created by Alexander on 12/11/2023
  */
 public class ClassicMancalaSetup implements MancalaSetup {
+    public static final int STONES_PER_PIT = 6;
+    public static final int PITS_PER_PLAYER = 6;
+    public static final int PLAYERS =2;
+    public static final int PITS_TOTAL = PLAYERS+PLAYERS*PITS_PER_PLAYER;
 
     @Override
         public int[] startingPits() {
@@ -28,30 +32,31 @@ public class ClassicMancalaSetup implements MancalaSetup {
 
     //6 13 20 ...
     public boolean isThisPlayerStoreIndex(int index, int playerIndex) {
-        if (playerIndex> pitsPerPlayer()){
-            //TODO
+        if (playerIndex > pitsPerPlayer()){
+            //TODO - should not be able to start such a game
+            throw new RuntimeException("playerIndex > pitsPerPlayer(), this case is not implemented");
         }
         return index % pitsPerPlayer() == playerIndex;
     }
 
     @Override
     public int playersNumber() {
-        return 2;
+        return PLAYERS;
     }
 
     @Override
     public int stonesPerPit() {
-        return 6;
+        return STONES_PER_PIT;
     }
 
     @Override
     public int pitsPerPlayer() {
-        return 6;
+        return PITS_PER_PLAYER;
     }
 
     @Override
     public int pitsTotal() {
-        return playersNumber()+playersNumber()*pitsPerPlayer();
+        return PITS_TOTAL;
     }
 
 

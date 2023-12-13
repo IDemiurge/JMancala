@@ -3,9 +3,10 @@ package mancala.config;
 import mancala.game.GameService;
 import mancala.game.logic.handler.OutcomeHandler;
 import mancala.game.logic.handler.PitHandler;
-import mancala.game.IGameService;
 import mancala.game.logic.handler.ITipHandler;
 import mancala.game.logic.handler.TipHandler;
+import mancala.game.logic.handler.rules.IRulesHandler;
+import mancala.game.logic.handler.rules.ClassicRulesHandler;
 import mancala.game.logic.setup.ClassicMancalaSetup;
 import mancala.game.logic.setup.MancalaSetup;
 import mancala.session.SessionService;
@@ -46,5 +47,10 @@ public class MancalaConfig {
     @Bean
     public SessionService sessionService(){
         return new SessionService();
+    }
+
+    @Bean
+    public IRulesHandler rulesHandler(){
+        return new ClassicRulesHandler();
     }
 }

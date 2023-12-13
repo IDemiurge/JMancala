@@ -1,11 +1,11 @@
 package mancala.game.logic.handler;
 
+import mancala.game.logic.handler.rules.IRulesHandler;
 import mancala.game.logic.setup.MancalaSetup;
-import mancala.game.logic.state.turn.ITurnState;
-import mancala.game.logic.state.turn.TurnState;
+import mancala.game.logic.state.TurnState;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static mancala.game.logic.state.turn.TurnState.StateType.*;
+import static mancala.game.logic.state.TurnState.StateType.*;
 
 /**
  * Created by Alexander on 12/11/2023
@@ -19,36 +19,31 @@ public class PitHandler {
     @Autowired
     OutcomeHandler outcomeHandler;
 
-    //recursive with exceptions? is this SOUND and SOLID?
-    //ALT:  while (stones > 0 )
-    public ITurnState placeStone(TurnState state) {
+    @Autowired
+    IRulesHandler rulesHandler;
+
+    public TurnState placeStone(TurnState state) {
         if (state.inHand() == 1) {
+            TurnState exitRuleState = rulesHandler.checkFinalStoneRules(state);
+           if (exitRuleState!=null)
+               return checkGameOver(exitRuleState);
+        }
+        state = checkGameOver(state);
 
-            //end turn
-            //check extra turn
-            //check capture
+        if (state.type()== GAME_OVER)
+            return state;
 
-            // captureRule.check(state);
-        } else {
-            int winner = outcomeHandler.getWinner(state);
-            if (winner > 0) {
-                return createGameOverState(0, state, winner);
+        int index = state.pitIndex();
+
+        if (setup.isStoreIndex(index)) {
+            if (!setup.isThisPlayerStoreIndex(index, state.playerIndex())) {
+                index = nextPit(index); //ignore opponents' stores
             }
+            // else will just put into player's store
         }
 
         //TODO CLONE? Can this lead to side-effect?
-        int index = state.pitIndex();
-
-        //use setup to check!
-        if (setup.isStoreIndex(index)) {
-            if (setup.isThisPlayerStoreIndex(index, state.playerIndex())) {
-                //store
-            } else {
-                index = nextPit(index); //ignore opponents' stores
-            }
-
-        }
-
+        // int[] pits = Arrays.copyOf(state.pits(), state.pits().length);
         state.pits()[index]++;
         int stonesLeft = state.inHand() - 1;
         if (stonesLeft == 0) {
@@ -58,8 +53,14 @@ public class PitHandler {
         return placeStone(
                 createNormalTurnState(stonesLeft, state, index));
     }
-    //TODO
-    //ALT - enum? state_type?
+
+    private TurnState checkGameOver(TurnState state) {
+        int winner = outcomeHandler.getWinner(state);
+        if (winner > 0) {
+            return createGameOverState(0, state, winner);
+        } else
+            return state;
+    }
 
     private TurnState createPlayerEndTurnState(int stonesLeft, TurnState state, int pitIndex) {
         return createNewTurnState(stonesLeft, state, pitIndex, NORMAL);
