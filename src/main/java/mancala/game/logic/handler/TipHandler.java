@@ -1,6 +1,7 @@
 package mancala.game.logic.handler;
 
-import mancala.game.logic.state.turn.ITurnState;
+
+import mancala.game.logic.state.TurnState;
 
 /**
  * Created by Alexander on 12/11/2023
@@ -11,7 +12,7 @@ public class TipHandler implements ITipHandler {
     int playerIndex;
 
     @Override
-    public String getTip(ITurnState turnState) {
+    public String getTip(TurnState turnState) {
         return "Mock tip";
     }
 

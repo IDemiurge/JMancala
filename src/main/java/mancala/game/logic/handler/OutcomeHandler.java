@@ -1,7 +1,7 @@
 package mancala.game.logic.handler;
 
 import mancala.game.logic.setup.MancalaSetup;
-import mancala.game.logic.state.turn.TurnState;
+import mancala.game.logic.state.TurnState;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

@@ -3,13 +3,12 @@ package mancala.game;
 import mancala.game.logic.handler.ITipHandler;
 import mancala.game.logic.setup.MancalaSetup;
 import mancala.game.logic.handler.PitHandler;
-import mancala.game.logic.state.turn.ITurnState;
-import mancala.game.logic.state.turn.TurnState;
+import mancala.game.logic.state.TurnState;
 import mancala.game.logic.state.GameState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static mancala.game.logic.state.turn.TurnState.StateType.NORMAL;
+import static mancala.game.logic.state.TurnState.StateType.NORMAL;
 
 @Service
 public class GameService implements IGameService {
@@ -38,7 +37,7 @@ public class GameService implements IGameService {
          */
         //TODO validate input?
 
-        ITurnState turnState =  pitHandler.placeStone(createStartTurnState(state, pitIndex));
+        TurnState turnState =  pitHandler.placeStone(createStartTurnState(state, pitIndex));
 
         return createNewGameState(turnState);
     }
@@ -52,7 +51,7 @@ public class GameService implements IGameService {
         return new GameState(setup.startingPits(), 0, tipHandler.getStartingTip());
     }
 
-    public GameState createNewGameState(ITurnState turnState) {
+    public GameState createNewGameState(TurnState turnState) {
         int player = turnState.playerIndex();
         switch (turnState.type()) {
             case PLAYER_DONE:
