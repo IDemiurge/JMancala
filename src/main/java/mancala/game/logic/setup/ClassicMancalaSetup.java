@@ -7,8 +7,6 @@ import java.util.Arrays;
  */
 public class ClassicMancalaSetup implements MancalaSetup {
 
-    private int winner = -1;
-
     @Override
         public int[] startingPits() {
         int[] pits = new int[playersNumber()+ pitsPerPlayer()*playersNumber()];
@@ -56,15 +54,6 @@ public class ClassicMancalaSetup implements MancalaSetup {
         return playersNumber()+playersNumber()*pitsPerPlayer();
     }
 
-    @Override
-    public void setWinner(int winner) {
-        this.winner = winner;
-    }
-
-    @Override
-    public int winner() {
-        return this.winner;
-    }
 
 
 }

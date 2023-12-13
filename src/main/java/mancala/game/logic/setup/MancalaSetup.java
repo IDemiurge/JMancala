@@ -16,7 +16,4 @@ public interface MancalaSetup {
 
     int pitsTotal();
 
-    void setWinner(int winner);
-
-    int winner();
 }
