@@ -22,6 +22,7 @@ public class GameService implements IGameService {
     public void join(GameState state) {
         // map.put()
         //as next player
+        //signal that game can be started
 
     }
 

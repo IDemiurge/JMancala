@@ -9,9 +9,9 @@ public class MancalaUtils {
         if (index == pitsPerPlayer || index == pitsPerPlayer * 2 + 1)
             throw new RuntimeException("Opposite pit calculation won't work for store pit at " + index);
 
-        int dstToStore = Math.abs(1 + pitsPerPlayer - index);
+        int dstToStore = Math.abs(pitsPerPlayer - index);
         int diff = dstToStore * 2 + 2;
-        return playerIndex == 0 ? index + diff : index - diff;
+        return playerIndex == 0 ?  diff - index : index - diff;
 
     }
 

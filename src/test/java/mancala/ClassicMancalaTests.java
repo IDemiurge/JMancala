@@ -1,6 +1,6 @@
 package mancala;
 
-import mancala.config.MancalaConfig;
+import mancala.config.ClassicMancalaConfig;
 import mancala.game.IGameService;
 import mancala.game.logic.state.GameState;
 import org.junit.jupiter.api.Test;
@@ -13,9 +13,8 @@ import java.util.Arrays;
 /**
  * Created by Alexander on 12/11/2023
  */
-@SpringBootTest(classes = MancalaConfig.class)
-
-public class JMancalaTests {
+@SpringBootTest(classes = ClassicMancalaConfig.class)
+public class ClassicMancalaTests {
     @Autowired
     private IGameService gameService;
 
@@ -35,7 +34,6 @@ public class JMancalaTests {
     public void testMakeMove() {
         GameState gameState = gameService.host();
         gameService.join(gameState);
-
         // Make a move and get the updated state
         GameState updatedState = gameService.makeMove(gameState, 3);
 
@@ -44,4 +42,27 @@ public class JMancalaTests {
         Assert.isTrue(updatedState.pits()[10] == 7, "Pit 10 should have 1 more stone after move");
         Assert.isTrue(updatedState.pits()[11] == 6, "Pit 11 should be the same after move");
     }
+
+    @Test
+    public void testExtraTurnRule() {
+        GameState gameState = gameService.host();
+        gameService.join(gameState);
+        int player = gameState.currentPlayer();
+        GameState updatedState = gameService.makeMove(gameState, 0);
+        Assert.isTrue(updatedState.currentPlayer() == player, "Game should have given another turn to active player");
+
+    }
+
+    @Test
+    public void testCaptureRule() {
+        GameState gameState = gameService.host();
+        gameService.join(gameState);
+        gameState.pits()[0] = 1;
+        gameState.pits()[1] = 0;
+        GameState updatedState = gameService.makeMove(gameState, 0);
+
+        Assert.isTrue(updatedState.pits()[11] == 0, "Game should have captured stones");
+        Assert.isTrue(updatedState.pits()[6] == 6, "Game should have put captured stones into player's store");
+    }
+
 }

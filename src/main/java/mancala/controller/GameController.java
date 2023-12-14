@@ -33,6 +33,8 @@ public class GameController {
         model.addAttribute("gameState", gameState);
         return "game";
     }
+// need to differentiate between players - they must send some data about themselves in each request so we can serve
+//corresponding version of the board - flipped and properly (un)blocked
 
     @PostMapping("/game/{gameId}/move")
     public String makeMove(@PathVariable String gameId, @RequestParam("pitIndex") int pitIndex, Model model) {

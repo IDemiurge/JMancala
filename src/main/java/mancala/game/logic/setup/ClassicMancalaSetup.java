@@ -10,6 +10,7 @@ public class ClassicMancalaSetup implements MancalaSetup {
     public static final int PITS_PER_PLAYER = 6;
     public static final int PLAYERS =2;
     public static final int PITS_TOTAL = PLAYERS+PLAYERS*PITS_PER_PLAYER;
+    public static final int[] STORES = new int[] {6, 13} ;
 
     @Override
         public int[] startingPits() {
@@ -28,7 +29,6 @@ public class ClassicMancalaSetup implements MancalaSetup {
         }
         return false;
     }
-
 
     //6 13 20 ...
     public boolean isThisPlayerStoreIndex(int index, int playerIndex) {

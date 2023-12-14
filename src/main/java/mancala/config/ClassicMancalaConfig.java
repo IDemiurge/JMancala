@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by Alexander on 12/11/2023
  */
 @Configuration
-public class MancalaConfig {
+public class ClassicMancalaConfig {
 
     @Bean
     public MancalaSetup getSetup(){
