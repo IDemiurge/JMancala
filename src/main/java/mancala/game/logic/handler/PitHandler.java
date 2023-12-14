@@ -10,7 +10,6 @@ import static mancala.game.logic.state.TurnState.StateType.*;
 /**
  * Created by Alexander on 12/11/2023
  */
-//composite of rules?
 public class PitHandler {
 
     @Autowired
@@ -33,25 +32,26 @@ public class PitHandler {
         if (state.type()== GAME_OVER)
             return state;
 
-        int index = state.pitIndex();
+        int pitIndex = state.pitIndex();
 
-        if (setup.isStoreIndex(index)) {
-            if (!setup.isThisPlayerStoreIndex(index, state.playerIndex())) {
-                index = nextPit(index); //ignore opponents' stores
+        if (setup.isStoreIndex(pitIndex)) {
+            if (!setup.isThisPlayerStoreIndex(pitIndex, state.playerIndex())) {
+                pitIndex = nextPit(pitIndex); //ignore opponents' stores
             }
             // else will just put into player's store
         }
 
         //TODO CLONE? Can this lead to side-effect?
         // int[] pits = Arrays.copyOf(state.pits(), state.pits().length);
-        state.pits()[index]++;
+        state.pits()[pitIndex]++;
         int stonesLeft = state.inHand() - 1;
+        //use BUILDER pattern and add type as just first step?
         if (stonesLeft == 0) {
-            return createPlayerEndTurnState(stonesLeft, state, index);
+            return createPlayerEndTurnState(stonesLeft, state, pitIndex);
         }
-
+        pitIndex=nextPit(pitIndex);
         return placeStone(
-                createNormalTurnState(stonesLeft, state, index));
+                createNormalTurnState(stonesLeft, state, pitIndex));
     }
 
     private TurnState checkGameOver(TurnState state) {
@@ -61,13 +61,13 @@ public class PitHandler {
         } else
             return state;
     }
-
+    //TODO refactor this elsewhere?
     private TurnState createPlayerEndTurnState(int stonesLeft, TurnState state, int pitIndex) {
-        return createNewTurnState(stonesLeft, state, pitIndex, NORMAL);
+        return createNewTurnState(stonesLeft, state, pitIndex, PLAYER_DONE);
     }
 
     private TurnState createNormalTurnState(int stonesLeft, TurnState state, int pitIndex) {
-        return createNewTurnState(stonesLeft, state, pitIndex, PLAYER_DONE);
+        return createNewTurnState(stonesLeft, state, pitIndex, NORMAL);
     }
 
     private TurnState createGameOverState(int stonesLeft, TurnState state, int winner) {
@@ -77,7 +77,7 @@ public class PitHandler {
     private TurnState createNewTurnState(int stonesLeft, TurnState state, int pitIndex, TurnState.StateType type) {
         return new TurnState(
                 state.pits(), stonesLeft, state.playerIndex(),
-                nextPit(pitIndex), type);
+                pitIndex, type);
     }
 
     private int nextPit(int pitIndex) {
