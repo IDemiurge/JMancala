@@ -81,22 +81,43 @@ public class GameService implements IGameService {
         List<String> players = new ArrayList<>();
         players.add(playerName);
         String identifier = generateId(playerName, setup);
-        return new GameState(1, setup.startingPits(), 0, tipHandler.getStartingTip(playerName), players, identifier, false);
+        return  GameState.builder()
+                .turnNumber(1)
+                .pits(setup.startingPits())
+                .players(players)
+                .statusMessage(tipHandler.getStartingTip(playerName))
+                .currentPlayer(0)
+                .identifier(identifier)
+                .build();
     }
 
     public GameState createNewGameState(TurnState turnState, GameState state) {
-        int player = turnState.playerIndex();
+        int currentPlayer = turnState.playerIndex();
         int turn = state.turnNumber();
+        GameState.Builder builder = GameState.builder()
+                .copyFields(state)
+                .pits(turnState.pits())
+                .statusMessage(tipHandler.getTip(turnState, state));
+
         switch (turnState.type()) {
             case PLAYER_DONE:
                 if (turnState.playerIndex() == 0) {
                     turn++;  //increment turnNumber only when host moves
                 }
-                player = nextPlayer(turnState.playerIndex());
+                currentPlayer = nextPlayer(turnState.playerIndex());
             case NORMAL:
-                return new GameState(turn, turnState.pits(), player, tipHandler.getTip(turnState, state), state.players(), state.identifier(), false);
+                return  builder
+                        .currentPlayer(currentPlayer)
+                        .turnNumber(turn)
+                        .build();
             case GAME_OVER:
-                return new GameState(turn, turnState.pits(), player, tipHandler.getGameOverTip(turnState, state), state.players(), state.identifier(), true);
+                return  builder
+                        .currentPlayer(currentPlayer)
+                        .turnNumber(turn)
+                        .victor(state.players().get( turnState.getWinnerIndex()))
+                        .build();
+                // return new GameState(turn, turnState.pits(), player, tipHandler.getGameOverTip(turnState, state),
+                //         state.players(), state.identifier(), true);
         }
         throw new RuntimeException("Unknown turnNumber state type: " + turnState.type());
     }

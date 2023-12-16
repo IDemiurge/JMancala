@@ -74,6 +74,20 @@ public class ClassicMancalaTests {
     }
 
     @Test
+    public void testGameOver() {
+        log.info("---> Starting test: testGameOver");
+        GameState gameState = gameService.host();
+        gameState = gameService.join(gameState);
+        int[] pits = new int[]{
+                6, 0, 0, 0, 0, 0, 1, 7, 7, 6, 6, 6, 6, 0
+        };
+        gameState = GameState.builder().copyFields(gameState).pits(pits).build();
+
+        GameState updatedState = gameService.makeMove(gameState, 0);
+        Assert.isTrue(updatedState.gameOver(), "Game should have ended");
+
+    }
+    @Test
     public void testGame() {
         log.info("---> Starting test: testGame");
         int[] pits;
