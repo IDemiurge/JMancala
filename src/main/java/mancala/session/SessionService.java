@@ -35,8 +35,12 @@ public class SessionService {
 
     public GameState makeMove(String gameId, int pitIndex) {
         GameState state = games.get(gameId);
-        gameService.makeMove(state, pitIndex);
-        games.put(gameId, state);
+        state = gameService.makeMove(state, pitIndex);
+        if (state.gameOver()){
+            games.remove(gameId);
+        } else {
+            games.put(gameId, state);
+        }
         return state;
     }
 }

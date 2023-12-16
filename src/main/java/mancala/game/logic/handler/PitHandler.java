@@ -56,7 +56,7 @@ public class PitHandler {
 
     private TurnState checkGameOver(TurnState state) {
         int winner = outcomeHandler.getWinner(state);
-        if (winner > 0) {
+        if (winner >= 0) {
             return createGameOverState(0, state, winner);
         } else
             return state;

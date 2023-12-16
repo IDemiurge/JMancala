@@ -56,7 +56,7 @@ public class ClassicMancalaTests {
         gameState = gameService.join(gameState);
         int player = gameState.currentPlayer();
         GameState updatedState = gameService.makeMove(gameState, 0);
-        Assert.isTrue(updatedState.currentPlayer() == player, "Game should have given another turn to active player");
+        Assert.isTrue(updatedState.currentPlayer() == player, "Game should have given another turnNumber to active player");
 
     }
 

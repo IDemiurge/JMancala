@@ -34,7 +34,12 @@ public class GameController {
     @PostMapping("/game/{gameId}/move")
     public String makeMove(@PathVariable String gameId, @RequestParam("pitIndex") int pitIndex, Model model) {
         GameState gameState = gameSessionService.makeMove(gameId, pitIndex);
+        if (gameState.gameOver()){
+            //properly clean up?
+            return "gameBoard :: endGameFragment";
+        }
         model.addAttribute("gameState", gameState);
+        //insert boardFragment into gameBoard?
         return "gameBoard :: boardFragment";
     }
 }

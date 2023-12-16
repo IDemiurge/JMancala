@@ -50,7 +50,7 @@ public class GameService implements IGameService {
     }
 
     private String generateId(String playerName, MancalaSetup setup) {
-        return playerName+"-"+setup.getName();
+        return playerName + "-" + setup.getName();
     }
 
     @Override
@@ -81,21 +81,24 @@ public class GameService implements IGameService {
         List<String> players = new ArrayList<>();
         players.add(playerName);
         String identifier = generateId(playerName, setup);
-        return new GameState(setup.startingPits(), 0, tipHandler.getStartingTip(playerName), players, identifier);
+        return new GameState(1, setup.startingPits(), 0, tipHandler.getStartingTip(playerName), players, identifier, false);
     }
 
     public GameState createNewGameState(TurnState turnState, GameState state) {
         int player = turnState.playerIndex();
+        int turn = state.turnNumber();
         switch (turnState.type()) {
             case PLAYER_DONE:
+                if (turnState.playerIndex() == 0) {
+                    turn++;  //increment turnNumber only when host moves
+                }
                 player = nextPlayer(turnState.playerIndex());
             case NORMAL:
-                return new GameState(turnState.pits(), player, tipHandler.getTip(turnState, state),  state.players(),  state.identifier());
+                return new GameState(turn, turnState.pits(), player, tipHandler.getTip(turnState, state), state.players(), state.identifier(), false);
             case GAME_OVER:
-                //TODO
-                break;
+                return new GameState(turn, turnState.pits(), player, tipHandler.getGameOverTip(turnState, state), state.players(), state.identifier(), true);
         }
-        throw new RuntimeException("Unknown turn state type: " + turnState.type());
+        throw new RuntimeException("Unknown turnNumber state type: " + turnState.type());
     }
 
     private int nextPlayer(int playerIndex) {

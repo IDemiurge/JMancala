@@ -8,4 +8,6 @@ public interface ITipHandler {
     String getTip(TurnState turnState, GameState state);
 
     String getStartingTip(String playerName);
+
+    String getGameOverTip(TurnState turnState, GameState state);
 }

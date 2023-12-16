@@ -12,8 +12,8 @@ import mancala.game.utils.MancalaMathUtils;
 public class ClassicExtraTurnRule implements ExtraTurnRule {
     @Override
     public TurnState enact(TurnState state) {
-        log.info("Extra turn for player #"+state.playerIndex());
-        //change nothing, just return state to start the same player's turn over
+        log.info("Extra turnNumber for player #"+state.playerIndex());
+        //change nothing, just return state to start the same player's turnNumber over
         return state;
     }
 
