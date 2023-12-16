@@ -9,7 +9,7 @@ public interface IGameService {
 
     GameState makeMove(GameState gameState, int pitIndex);
 
-    void join(GameState state);
+    GameState join(GameState state);
 
-    void join(GameState state, String playerName);
+    GameState join(GameState state, String playerName);
 }

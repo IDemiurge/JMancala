@@ -1,6 +1,7 @@
 package mancala.game.logic.handler;
 
 
+import mancala.game.logic.state.GameState;
 import mancala.game.logic.state.TurnState;
 
 /**
@@ -8,18 +9,15 @@ import mancala.game.logic.state.TurnState;
  */
 public class TipHandler implements ITipHandler {
 
-    //TODO
-    int playerIndex;
 
     @Override
-    public String getTip(TurnState turnState) {
+    public String getTip(TurnState turnState, GameState state) {
+        // turnState.playerIndex()
         return "Mock tip";
     }
 
     @Override
-    public String getStartingTip() {
-        if (playerIndex==0)
-            return "Game started with you as a host. Pick a pit!";
-        return "Game started with you as a guest. Wait for your turn...";
+    public String getStartingTip(String playerName) {
+        return "Game started by " + playerName;
     }
 }

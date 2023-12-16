@@ -24,22 +24,18 @@ public class GameService implements IGameService {
     ITipHandler tipHandler;
     @Autowired
     MancalaSetup setup;
-
-    List<String> players = new ArrayList<>();
+    //TODO pass as parameter on create()!
 
 
     @Override
-    public void join(GameState state) {
-        join(state, "GUEST");
+    public GameState join(GameState state) {
+        return join(state, "GUEST");
     }
 
     @Override
-    public void join(GameState state, String playerName) {
-        // map.put()
-        //as next player
-        //signal that game can be started
+    public GameState join(GameState state, String playerName) {
         log.info("\nGame joined by " + playerName);
-        players.add(playerName);
+        return state.addPlayer(playerName);
     }
 
     @Override
@@ -50,20 +46,23 @@ public class GameService implements IGameService {
     @Override
     public GameState host(String playerName) {
         log.info("\nHosting Game as " + playerName);
-        players.add(playerName);
-        return createGameState();
+        return createGameState(playerName);
+    }
+
+    private String generateId(String playerName, MancalaSetup setup) {
+        return playerName+"-"+setup.getName();
     }
 
     @Override
     public GameState makeMove(GameState state, int pitIndex) {
         //TODO validate input?
         //TODO getPlayerName(index)
-        log.info("\n" + players.get(state.currentPlayer()) + " player move: " + pitIndex);
+        log.info("\n" + state.currentPlayerName() + " player move: " + pitIndex);
         logState(state);
         TurnState turnState = pitHandler.placeStone(createStartTurnState(state, pitIndex));
         log.info("\nTurn done");
         logState(state);
-        return createNewGameState(turnState);
+        return createNewGameState(turnState, state);
     }
 
     private void logState(GameState state) {
@@ -78,17 +77,20 @@ public class GameService implements IGameService {
         return new TurnState(state.pits(), inHand, state.currentPlayer(), ++pitIndex, NORMAL);
     }
 
-    public GameState createGameState() {
-        return new GameState(setup.startingPits(), 0, tipHandler.getStartingTip());
+    public GameState createGameState(String playerName) {
+        List<String> players = new ArrayList<>();
+        players.add(playerName);
+        String identifier = generateId(playerName, setup);
+        return new GameState(setup.startingPits(), 0, tipHandler.getStartingTip(playerName), players, identifier);
     }
 
-    public GameState createNewGameState(TurnState turnState) {
+    public GameState createNewGameState(TurnState turnState, GameState state) {
         int player = turnState.playerIndex();
         switch (turnState.type()) {
             case PLAYER_DONE:
                 player = nextPlayer(turnState.playerIndex());
             case NORMAL:
-                return new GameState(turnState.pits(), player, tipHandler.getTip(turnState));
+                return new GameState(turnState.pits(), player, tipHandler.getTip(turnState, state),  state.players(),  state.identifier());
             case GAME_OVER:
                 //TODO
                 break;

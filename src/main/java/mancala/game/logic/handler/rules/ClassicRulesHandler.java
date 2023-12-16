@@ -12,11 +12,12 @@ public class ClassicRulesHandler implements IRulesHandler {
 
     @Override
     public TurnState checkFinalStoneRules(TurnState state) {
-        if (captureRule.check(state)) {
-            return captureRule.enact(state);
-        }
+        //these rules are considered mutually exclusive
         if (extraTurnRule.check(state)) {
             return extraTurnRule.enact(state);
+        }
+        if (captureRule.check(state)) {
+            return captureRule.enact(state);
         }
         return null;
     }

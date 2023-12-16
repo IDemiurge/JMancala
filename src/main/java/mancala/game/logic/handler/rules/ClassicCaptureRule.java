@@ -24,6 +24,8 @@ public class ClassicCaptureRule implements CaptureRule {
     public boolean check(TurnState state) {
         if (Math.abs(state.pitIndex() - ClassicMancalaSetup.STORES[state.playerIndex()]) > ClassicMancalaSetup.PITS_PER_PLAYER)
             return false; //not player's own pit
+        if (ClassicMancalaSetup.STORES[0] == state.pitIndex() || ClassicMancalaSetup.STORES[1] == state.pitIndex())
+            return false; //not for stores
         return state.pits()[state.pitIndex()] == 0;
     }
 }

@@ -13,18 +13,13 @@ public class GameController {
     @Autowired
     SessionService gameSessionService;
 
-    //TODO homeController?
 
-    // @GetMapping("/")
-    // public String home() {
-    //     return "index";
-    // }
-
-    @GetMapping("/createGame")
+    @PostMapping("/createGame")
     public String createGame(Model model) {
         GameState gameState = gameSessionService.createNewGame();
         model.addAttribute("gameState", gameState);
-        return "game";
+        String id= gameState.identifier();
+        return "redirect: game/"+id;
     }
 
     @GetMapping("/joinGame/{gameId}")

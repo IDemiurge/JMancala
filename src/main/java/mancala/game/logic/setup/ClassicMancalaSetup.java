@@ -59,5 +59,8 @@ public class ClassicMancalaSetup implements MancalaSetup {
         return PITS_TOTAL;
     }
 
-
+    @Override
+    public String getName() {
+        return "Classic";
+    }
 }
