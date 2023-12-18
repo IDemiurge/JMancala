@@ -17,10 +17,11 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.22</version> <!-- Use the latest version -->
+			<version>1.18.26</version> <!-- Use the latest version -->
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

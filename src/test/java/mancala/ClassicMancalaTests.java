@@ -1,7 +1,7 @@
 package mancala;
 
 import lombok.extern.slf4j.Slf4j;
-import mancala.config.ClassicMancalaConfig;
+import mancala.configuration.ClassicMancalaConfig;
 import mancala.game.IGameService;
 import mancala.game.logic.state.GameState;
 import mancala.game.utils.MancalaStringUtils;
