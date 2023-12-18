@@ -9,6 +9,7 @@ import java.util.List;
  * Created by Alexander on 12/17/2023
  */
 public class GameRoom {
+    //TODO id here?
     private String hostUserName;
     private MancalaGameMode gameMode =MancalaGameMode.Classic;
     private List<String> players=     new ArrayList<>() ;

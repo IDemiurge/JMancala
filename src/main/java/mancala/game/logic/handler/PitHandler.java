@@ -21,6 +21,12 @@ public class PitHandler {
     @Autowired
     IRulesHandler rulesHandler;
 
+    public PitHandler(MancalaSetup setup, OutcomeHandler outcomeHandler, IRulesHandler rulesHandler) {
+        this.setup = setup;
+        this.outcomeHandler = outcomeHandler;
+        this.rulesHandler = rulesHandler;
+    }
+
     public TurnState placeStone(TurnState state) {
         if (state.inHand() == 1) {
             TurnState exitRuleState = rulesHandler.checkFinalStoneRules(state);

@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Created by Alexander on 12/12/2023
  */
 public class OutcomeHandler {
-    @Autowired
     MancalaSetup setup;
 
-    //is this a natural way to do this? game can end by capture..?
+    public OutcomeHandler(MancalaSetup setup) {
+        this.setup = setup;
+    }
+
     public int getWinner(TurnState state) {
         for (int i = 0; i < setup.playersNumber(); i++) {
             if (checkPlayerPits(state, i * setup.pitsPerPlayer(), (i + 1) * setup.pitsPerPlayer()

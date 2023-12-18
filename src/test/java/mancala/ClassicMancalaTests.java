@@ -1,8 +1,9 @@
 package mancala;
 
 import lombok.extern.slf4j.Slf4j;
-import mancala.configuration.ClassicMancalaConfig;
+import mancala.game.GameData;
 import mancala.game.IGameService;
+import mancala.game.logic.setup.MancalaGameMode;
 import mancala.game.logic.state.GameState;
 import mancala.game.utils.MancalaStringUtils;
 import org.junit.jupiter.api.Test;
@@ -11,22 +12,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Created by Alexander on 12/11/2023
  */
-@SpringBootTest(classes = ClassicMancalaConfig.class)
+@SpringBootTest
 @Slf4j
 public class ClassicMancalaTests {
     @Autowired
     private IGameService gameService;
+    private GameData testGameData= new GameData("test_game", List.of("host", "guest"), MancalaGameMode.Classic);
 
     @Test
     public void testInitialGameState() {
         log.info("---> Starting test: testInitialGameState");
-        GameState initialState = gameService.host();
+        GameState initialState = gameService.startGame(testGameData);
 
         Assert.isTrue(initialState.pits().length == 14, "Should have 14 pits including stores");
         Assert.isTrue(initialState.pits()[6] == 0, "Player's store is empty initially");
@@ -38,8 +41,7 @@ public class ClassicMancalaTests {
     @Test
     public void testMakeMove() {
         log.info("---> Starting test: testMakeMove");
-        GameState gameState = gameService.host();
-        gameState = gameService.join(gameState);
+        GameState gameState = gameService.startGame(testGameData);
         // Make a move and get the updated state
         GameState updatedState = gameService.makeMove(gameState, 3);
 
@@ -52,8 +54,7 @@ public class ClassicMancalaTests {
     @Test
     public void testExtraTurnRule() {
         log.info("---> Starting test: testExtraTurnRule");
-        GameState gameState = gameService.host();
-        gameState = gameService.join(gameState);
+        GameState gameState = gameService.startGame(testGameData);
         int player = gameState.currentPlayer();
         GameState updatedState = gameService.makeMove(gameState, 0);
         Assert.isTrue(updatedState.currentPlayer() == player, "Game should have given another turnNumber to active player");
@@ -63,8 +64,7 @@ public class ClassicMancalaTests {
     @Test
     public void testCaptureRule() {
         log.info("---> Starting test: testCaptureRule");
-        GameState gameState = gameService.host();
-        gameState = gameService.join(gameState);
+        GameState gameState = gameService.startGame(testGameData);
         gameState.pits()[0] = 1;
         gameState.pits()[1] = 0;
         GameState updatedState = gameService.makeMove(gameState, 0);
@@ -76,8 +76,7 @@ public class ClassicMancalaTests {
     @Test
     public void testGameOver() {
         log.info("---> Starting test: testGameOver");
-        GameState gameState = gameService.host();
-        gameState = gameService.join(gameState);
+        GameState gameState = gameService.startGame(testGameData);
         int[] pits = new int[]{
                 6, 0, 0, 0, 0, 0, 1, 7, 7, 6, 6, 6, 6, 0
         };
@@ -91,8 +90,7 @@ public class ClassicMancalaTests {
     public void testGame() {
         log.info("---> Starting test: testGame");
         int[] pits;
-        GameState state = gameService.host();
-        state = gameService.join(state);
+        GameState state = gameService.startGame(testGameData);
 
         state = gameService.makeMove(state, 2);
 

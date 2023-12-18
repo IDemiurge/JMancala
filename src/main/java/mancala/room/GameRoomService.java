@@ -1,6 +1,8 @@
 package mancala.room;
 
+import mancala.game.GameData;
 import mancala.game.IGameService;
+import mancala.game.exception.GameNotFoundException;
 import mancala.game.logic.setup.MancalaGameMode;
 import mancala.game.logic.state.GameState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ public class GameRoomService {
     IGameService gameService;
     @Autowired
     Comparator<GameRoom> gameRoomSorter;
+    @Autowired
+    GameIdGenerator idGenerator;
 
     private Map<String, GameState> activeGames = new ConcurrentHashMap<>();
     private Map<String, GameRoom> rooms = new ConcurrentHashMap<>();
@@ -29,24 +33,30 @@ public class GameRoomService {
         return gameRooms;
     }
 
-    public GameState createNewGame(String hostUserName, MancalaGameMode gameMode) {
-        //TODO mode!
-        GameState gameState = gameService.host(hostUserName);
+    public String createNewGame(String hostUserName, MancalaGameMode gameMode) {
+        String identifier = idGenerator.generateIdentifier(hostUserName, gameMode);
         GameRoom gameRoom = new GameRoom(hostUserName);
         gameRoom.setGameMode(gameMode);
-        rooms.put(gameState.identifier(), gameRoom);
-        //TODO only create state when game is started!
-        activeGames.put(gameState.identifier(), gameState);
-        return gameState;
+        rooms.put(identifier, gameRoom);
+        return identifier;
     }
 
-    public GameState joinGame(String gameId, String userName) {
-        GameState state = activeGames.get(gameId);
-        if (state == null)
-            return null;
-        gameService.join(state, userName);
-        //if enough players...?
-        return state;
+    public boolean joinGame(String gameId, String userName) {
+        GameRoom room = rooms.get(gameId);
+        if (room == null)
+            return false;
+        room.getPlayers().add(userName);
+        return true;
+    }
+
+    public GameState startGame(String gameId) {
+        GameRoom room = rooms.get(gameId);
+        if (room == null)
+            throw new GameNotFoundException(gameId);
+        GameData data = new GameData(gameId, room.getPlayers(), room.getGameMode());
+        GameState gameState = gameService.startGame(data);
+        activeGames.put(gameId, gameState);
+        return gameState;
     }
 
     public GameState makeMove(String gameId, int pitIndex) {
@@ -60,4 +70,12 @@ public class GameRoomService {
         return state;
     }
 
+    public boolean isReadyToStart(String gameId) {
+        return rooms.get(gameId).getPlayers().size() >= getMinPlayers(  rooms.get(gameId));
+    }
+
+    private int getMinPlayers(GameRoom gameRoom) {
+        //TODO
+        return 2;
+    }
 }
