@@ -1,5 +1,6 @@
 package mancala.room;
 
+import lombok.extern.slf4j.Slf4j;
 import mancala.game.GameData;
 import mancala.game.IGameService;
 import mancala.game.exception.GameNotFoundException;
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Alexander on 12/12/2023
  */
 @Service
+@Slf4j
 public class GameRoomService {
     @Autowired
     IGameService gameService;
@@ -33,11 +35,17 @@ public class GameRoomService {
         return gameRooms;
     }
 
+    public GameState getGameState(String gameId) {
+        return activeGames.get(gameId);
+    }
+
     public String createNewGame(String hostUserName, MancalaGameMode gameMode) {
         String identifier = idGenerator.generateIdentifier(hostUserName, gameMode);
         GameRoom gameRoom = new GameRoom(hostUserName);
         gameRoom.setGameMode(gameMode);
         rooms.put(identifier, gameRoom);
+        gameRoom.setId(identifier);
+        log.info("Game room created: " + gameRoom);
         return identifier;
     }
 
@@ -46,6 +54,7 @@ public class GameRoomService {
         if (room == null)
             return false;
         room.getPlayers().add(userName);
+        log.info(room.getHostUserName()+ "'s Game room joined by: " + userName);
         return true;
     }
 
@@ -56,6 +65,7 @@ public class GameRoomService {
         GameData data = new GameData(gameId, room.getPlayers(), room.getGameMode());
         GameState gameState = gameService.startGame(data);
         activeGames.put(gameId, gameState);
+        log.info(room.getHostUserName()+ "'s Game started with state: " + gameState);
         return gameState;
     }
 

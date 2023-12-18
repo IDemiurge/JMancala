@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ClassicMancalaTests {
     @Autowired
     private IGameService gameService;
-    private GameData testGameData= new GameData("test_game", List.of("host", "guest"), MancalaGameMode.Classic);
+    private GameData testGameData= new GameData("test_game", Set.of("host", "guest"), MancalaGameMode.Classic);
 
     @Test
     public void testInitialGameState() {

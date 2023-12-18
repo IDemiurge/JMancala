@@ -11,4 +11,6 @@ public class ModelAttributes {
     public static final String GAME_STATE = "gameState";
     public static final String GAME_MODE = "gameMode";
     public static final String HOSTED_GAME = "hostedGame";
+    public static final String HOST_WAITING = "hostWaiting";
+    public static final String GAME_ID = "gameId";
 }

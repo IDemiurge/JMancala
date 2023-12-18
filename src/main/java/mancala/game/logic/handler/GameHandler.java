@@ -6,6 +6,9 @@ import mancala.game.logic.setup.MancalaSetup;
 import mancala.game.logic.state.GameState;
 import mancala.game.logic.state.TurnState;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Alexander on 12/18/2023
  */
@@ -32,11 +35,12 @@ public class GameHandler {
     }
 
     public GameState createStartingGameState() {
+        List<String> players = new ArrayList<>(data.players());
         return GameState.builder()
                 .turnNumber(1)
                 .pits(setup.startingPits())
-                .players(data.players())
-                .statusMessage(tipHandler.getStartingTip(data.players().get(0)))
+                .players(players)
+                .statusMessage(tipHandler.getStartingTip(players.get(0)))
                 .currentPlayer(0)
                 .identifier(data.identifier())
                 .build();

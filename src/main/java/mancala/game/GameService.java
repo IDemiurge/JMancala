@@ -27,7 +27,7 @@ public class GameService implements IGameService {
 
     @Override
     public GameState startGame(GameData data) {
-        log.info("\nHosted a Game:" + data.identifier());
+        log.info("\nStarted a Game:" + data.identifier());
         GameHandler handler = createGameHandler(data);
         GameState state = handler.createStartingGameState();
         gameHandlers.put(state.identifier(), handler);

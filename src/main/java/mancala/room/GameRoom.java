@@ -3,16 +3,19 @@ package mancala.room;
 import mancala.game.logic.setup.MancalaGameMode;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Alexander on 12/17/2023
  */
 public class GameRoom {
     //TODO id here?
+    private String id;
     private String hostUserName;
-    private MancalaGameMode gameMode =MancalaGameMode.Classic;
-    private List<String> players=     new ArrayList<>() ;
+    private MancalaGameMode gameMode = MancalaGameMode.Classic;
+    private Set<String> players = new LinkedHashSet<>();
 
     public GameRoom(String hostUserName) {
         this.hostUserName = hostUserName;
@@ -27,11 +30,19 @@ public class GameRoom {
         return gameMode;
     }
 
-    public List<String> getPlayers() {
+    public Set<String> getPlayers() {
         return players;
     }
 
     public void setGameMode(MancalaGameMode gameMode) {
         this.gameMode = gameMode;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 }

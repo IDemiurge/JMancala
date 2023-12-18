@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fragment</title>
+</head>
+<body>
+<label>BOARD </label>
+<div id = "gameBoard" th:if="${gameState != null}">
+    <p></p>
+    <div>
+        <!--    store-->
+    </div>
+    <!--    <div   th:class="${playerType == 'guest' ? 'flip-vertical' : ''}">-->
+    <div>
+        <h2>Table 1 (0 to 6)</h2>
+        <div th:replace="~{fragments/tableFragment :: tableFragment(start=0, end=6, items=items)}"></div>
+    </div>
+
+    <div>
+        <h2>Table 2 (7 to 13)</h2>
+        <div th:replace="~{fragments/tableFragment :: tableFragment(start=7, end=13, items=items)}"></div>
+    </div>
+
+    <div>
+        <!--    store-->
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<table th:fragment=tableFragment>
+  <tbody>
+  <tr th:each="i : ${#numbers.sequence(start, end)}">
+    <td th:text="${gameState.pits[i]}">
+    </td>
+    <td>
+      <form hx-post="/makeMove" hx-target="#gameBoard" hx-swap="outerHTML">
+        <input type="hidden" name="pitIndex" th:value="${i}" />
+        <button type="submit">Make Move</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
