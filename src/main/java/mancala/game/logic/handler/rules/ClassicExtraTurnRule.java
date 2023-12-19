@@ -12,7 +12,7 @@ import mancala.game.utils.MancalaMathUtils;
 public class ClassicExtraTurnRule implements ExtraTurnRule {
     @Override
     public TurnState enact(TurnState state) {
-        log.info("Extra turnNumber for player #"+state.playerIndex());
+        log.info("Extra turn for player #"+state.playerIndex());
         return state.addStone(state.pitIndex());
     }
 

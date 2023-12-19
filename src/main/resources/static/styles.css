@@ -2,13 +2,32 @@ body{
     background-color: grey;
 }
 
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+.center-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+
+
 .gameBoard {
     display: flex;
+}
+.horizontalReverse {
+    display: flex;
+    flex-direction: row-reverse;
 }
 .bottom {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end; /* Aligns all children to the bottom */
+    align-items: flex-end;
     height: 200px;
 }
 .top {
@@ -45,6 +64,14 @@ body{
     background-color: lightblue;
 }
 
+.enemyMancala {
+    min-width: 70px;
+    min-height: 150px;
+    border: 2px solid #000;
+    text-align: center;
+    vertical-align: middle;
+    background-color: pink;
+}
         .game-lobby {
             display: grid;
             grid-template-columns: repeat(5, 1fr);

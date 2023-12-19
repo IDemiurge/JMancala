@@ -9,36 +9,39 @@
 var tabId = /*[[${tabId}]]*/ 'defaulttabId';
 sessionStorage.setItem('tabId', tabId);
         };
-</script>
+
+    </script>
     <script src="js/main.js"></script>
 </head>
 <body>
-<div id="errorSection" th:if="${tabId == null}">
-    <label class="error">TAB ID MISSING!</label>
-</div>
-<div id="loginSection" th:if="${tabId != null && login == null}">
-    <form  th:if="${login == null}" th:action="@{/register}" th:object="${userForm}" method="post">
-        <label class="error" th:if="${login_error != null}" for="login" th:text="${login_error}"></label>
-        <input id="login" type="text" th:field="*{userName}" placeholder="*{userName}" required>
-        <input type="hidden" name="tabId" th:value="${tabId}" />
-        <button type="submit">Login</button>
-    </form>
+<div class="main-container">
+    <h1>--- JMANCALA by ALEX KAMEN ---</h1>
 
-</div>
+    <div class="center-container">
+        <div id="loginSection" th:if="${tabId != null && login == null}">
+            <form th:if="${login == null}" th:action="@{/register}" th:object="${userForm}" method="post">
+                <label class="error" th:if="${login_error != null}" for="login" th:text="${login_error}"></label>
+                <input id="login" type="text" th:field="*{userName}" placeholder="*{userName}" required>
+                <input type="hidden" name="tabId" th:value="${tabId}"/>
+                <button type="submit">Login</button>
+            </form>
 
-<div id="game-lobby" th:if="${login != null}">
-    <h1>Your unique ID for this tab is:</h1>
-    <p id="tabIdDisplay"></p>
-    <form th:action="@{/createGame}" method="post">
-        <button type="submit">Create Game</button>
-    </form>
+        </div>
 
-    <script th:src="@{js/setup-forms-tab-id-param.js}">
-    </script>
-    <div  class="HX" hx-get="/fetchGameRooms" hx-trigger="every 2s">
+        <div id="game-lobby" th:if="${login != null}">
+            <h1>Game Lobby</h1>
+            <h2>Available Games:</h2>
+            <form th:action="@{/createGame}" method="post">
+                <button type="submit">Create Game</button>
+            </form>
+
+            <script th:src="@{js/setup-forms-tab-id-param.js}">
+            </script>
+            <div class="HX" hx-get="/fetchGameRooms" hx-trigger="every 2s">
+            </div>
+            <script src="../js/setup-hx-vals.js"></script>
+        </div>
     </div>
-    <script src="../js/setup-hx-vals.js"></script>
 </div>
-
 </body>
 </html>

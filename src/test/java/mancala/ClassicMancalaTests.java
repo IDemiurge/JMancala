@@ -76,17 +76,31 @@ public class ClassicMancalaTests {
 
     @Test
     @DisplayName("Game Over Test")
-    //TODO CHECK THIS RULE
     public void testGameOver() {
         log.info("---> Starting test: testGameOver");
         GameState gameState = gameService.startGame(testGameSetupData);
         int[] pits = new int[]{
-                6, 0, 0, 0, 0, 0, 1, 7, 7, 6, 6, 6, 6, 0
+                0, 0, 0, 0, 0, 1, 1, 7, 7, 6, 6, 6, 6, 0
         };
         gameState = GameState.builder().copyFields(gameState).pits(pits).build();
 
-        GameState updatedState = gameService.makeMove(gameState, 0);
+        GameState updatedState = gameService.makeMove(gameState, 5);
         Assert.isTrue(updatedState.gameOver(), "Game should have ended because player clears their last non-empty pit");
+
+    }
+
+    @Test
+    @DisplayName("Game Not Over Test")
+    public void testNotGameOver() {
+        log.info("---> Starting test: testGameNotOver");
+        GameState gameState = gameService.startGame(testGameSetupData);
+        int[] pits = new int[]{
+                1, 0, 0, 0, 0, 1, 1, 7, 7, 6, 6, 6, 6, 0
+        };
+        gameState = GameState.builder().copyFields(gameState).pits(pits).build();
+
+        GameState updatedState = gameService.makeMove(gameState, 5);
+        Assert.isTrue(!updatedState.gameOver(), "Game should not have ended");
 
     }
     @Test

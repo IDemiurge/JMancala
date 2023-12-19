@@ -1,6 +1,7 @@
 package mancala.controller;
 
 import mancala.game.exception.GameNotFoundException;
+import mancala.game.exception.UserNotFoundException;
 import mancala.game.logic.setup.MancalaGameMode;
 import mancala.game.logic.state.GameState;
 import mancala.render.HtmxConsts;
@@ -30,15 +31,15 @@ public class RoomController {
 
     @PostMapping("/createGame")
     public String createGame(@RequestParam String tabId, Model model, RedirectAttributes redirectAttributes) {
-        Object username = sessionTools.getAttribute(tabId, USERNAME);
+        String username = sessionTools.getAttribute(tabId, USERNAME);
         if (username == null) {
-            //TODO
+            throw new UserNotFoundException(tabId);
         }
         Object gameMode = model.getAttribute(GAME_MODE);
         if (gameMode == null) {
             gameMode = MancalaGameMode.Classic;
         }
-        String gameId = roomService.createNewGame(username.toString(), (MancalaGameMode) gameMode);
+        String gameId = roomService.createNewGame(username, (MancalaGameMode) gameMode);
 
         redirectAttributes.addFlashAttribute(HOST_WAITING, true);
         redirectAttributes.addAttribute(TAB_ID, tabId);
@@ -55,7 +56,7 @@ public class RoomController {
         //check re-join and refresh
         String username = sessionTools.getAttribute(tabId, USERNAME);
         if (username == null) {
-            //TODO
+            throw new UserNotFoundException(tabId);
         }
         int playerId = roomService.joinGame(gameId, username);
 
@@ -67,12 +68,15 @@ public class RoomController {
         return "game";
     }
 
-    @GetMapping(value = "/check-game-room", produces = "text/html")
+    @GetMapping(value = "/checkGameReadyToStart", produces = "text/html")
     @ResponseBody
     public String checkGameReadyToStart(@RequestParam("tabId") String tabId) {
         String gameId = sessionTools.getAttribute(tabId, HOSTED_GAME);
         if (gameId == null) {
             return HtmxConsts.START_BUTTON_ERROR;
+        }
+        if (roomService.getGameRoom(gameId).isStarted()) {
+            return HtmxConsts.START_BUTTON_STARTED;
         }
         if (roomService.isReadyToStart(gameId.toString())) {
             return HtmxConsts.START_BUTTON_ENABLED;

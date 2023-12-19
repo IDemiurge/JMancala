@@ -8,6 +8,10 @@
 </head>
 <body>
 
+<div class="main-container">
+    <h1>--- JMANCALA by ALEX KAMEN ---</h1>
+
+    <div class="center-container">
 <div class="mainArea">
     <label>Welcome!</label>
     <p></p>
@@ -18,7 +22,7 @@ var tabId = /*[[${tabId}]]*/ 'defaulttabId';
 sessionStorage.setItem('tabId', tabId);
     </script>
         <div th:if="${gameState == null && hostWaiting == true}"
-             class="HX" id="startCheck"  hx-get="/check-game-room" hx-trigger="every 1s" hx-swap="innerHTML">
+             class="HX" id="startCheck"  hx-get="/checkGameReadyToStart" hx-trigger="every 1s" hx-swap="innerHTML">
             <form hx-post="/startGame">
                 <button type="submit" disabled>Start Game</button>
             </form>
@@ -52,6 +56,8 @@ sessionStorage.setItem('tabId', tabId);
 
         <script th:src="@{../js/setup-forms-tab-id-param.js}">
         </script>
+    </div>
+</div>
     </div>
 </div>
 </body>

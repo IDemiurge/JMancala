@@ -22,4 +22,8 @@ public class HtmxConsts {
                             <button type="submit">Start Game - ERROR</button>
                         </form>
             """;
+    public static final String START_BUTTON_STARTED =
+            """
+            <label>Game Started</label>
+            """;
 }

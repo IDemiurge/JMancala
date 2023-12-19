@@ -18,6 +18,7 @@ public class Room {
     private Set<String> players = new LinkedHashSet<>();
     private GameLog log;
     private MancalaSetup gameSetup;
+    private boolean started;
 
     public Room(String hostUserName) {
         this.hostUserName = hostUserName;
@@ -72,5 +73,13 @@ public class Room {
                     " with game mode " + gameMode);
         }
         players.add(userName);
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 }

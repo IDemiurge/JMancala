@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Fragment</title>
+    <title>Mancala Game</title>
 </head>
 <body>
-<label>BOARD </label>
 
 <div id = "gameBoard" th:if="${gameState != null}">
     <p></p>
@@ -13,29 +12,26 @@
     </div>
     <p></p>
 
-    <div  th:if="${playerType == null}">
-        <label>PLAYER TYPE MISSING!</label>
-        </div>
     <div  th:if="${playerType == 'guest'}">
+        <h2 th:text="${gameState.players.get(0)}"></h2>
     <div>
-        <h2>Enemy Pits</h2>
         <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=false, left=true, enabled=false, start=0, end=6, items=items)}"></div>
     </div>
     <div>
-        <h2>Your Pits</h2>
         <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=true, left=false, enabled=${gameState.currentPlayer==1}, start=7, end=13, items=items)}"></div>
     </div>
+        <h2 th:text="${gameState.players.get(1)}"></h2>
     </div>
 
     <div  th:if="${playerType == 'host'}">
+        <h2 th:text="${gameState.players.get(1)}"></h2>
         <div >
-            <h2>Enemy Pits</h2>
             <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=false, left=true, enabled=false, start=7, end=13, items=items)}"></div>
         </div>
         <div >
-            <h2>Your Pits</h2>
             <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=true, left=false, enabled=${gameState.currentPlayer==0}, start=0, end=6, items=items)}"></div>
         </div>
+        <h2 th:text="${gameState.players.get(0)}"></h2>
     </div>
 
     <p></p>

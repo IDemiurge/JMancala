@@ -1,10 +1,10 @@
 <div th:class="${ bottom? 'bottom' : 'top' }" th:fragment=tableFragment>
 
-  <div class="mancala"  th:if="${left == true}" >
+  <div th:class="${ bottom? 'mancala' : 'enemyMancala'}"  th:if="${left == true}" >
     <label th:text="|Store: ${gameState.pits[end]}|">
     </label>
   </div>
-  <div class="gameBoard">
+  <div  th:class="${ bottom? 'gameBoard' : 'horizontalReverse' }" >
   <div  th:each="i : ${#numbers.sequence(start, end-1)}">
       <form  hx-post="/makeMove" hx-target="#gameBoard" hx-swap="outerHTML">
         <input type="hidden" name="pitIndex" th:value="${i}" />
@@ -18,7 +18,7 @@
   </div>
   </div>
 
-  <div class="mancala"  th:if="${left != true}" >
+  <div th:class="${ bottom? 'mancala' : 'enemyMancala'}"  th:if="${left != true}" >
     <label th:text="|Store: ${gameState.pits[end]}|">
     </label>
   </div>

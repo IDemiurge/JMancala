@@ -2,6 +2,7 @@ package mancala.game.logic.handler;
 
 import mancala.game.logic.handler.rules.IRulesHandler;
 import mancala.game.logic.setup.MancalaSetup;
+import mancala.game.logic.state.GameState;
 import mancala.game.logic.state.TurnState;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,16 +28,17 @@ public class PitHandler {
         this.rulesHandler = rulesHandler;
     }
 
-    public TurnState placeStone(TurnState state) {
+
+    public TurnState moveStones(GameState state, int pitIndex) {
+        return checkGameOver(stepPlaceStone(createStartTurnState(state, pitIndex)));
+    }
+
+    public TurnState stepPlaceStone(TurnState state) {
         if (state.inHand() == 1) {
             TurnState exitRuleState = rulesHandler.checkFinalStoneRules(state);
-           if (exitRuleState!=null)
-               return checkGameOver(exitRuleState);
+            if (exitRuleState != null)
+                return exitRuleState;
         }
-        state = checkGameOver(state);
-
-        if (state.type()== GAME_OVER)
-            return state;
 
         int pitIndex = state.pitIndex();
 
@@ -48,12 +50,11 @@ public class PitHandler {
         }
         state = state.addStone(pitIndex);
         int stonesLeft = state.inHand() - 1;
-        //use BUILDER pattern and add type as just first step?
         if (stonesLeft == 0) {
             return createPlayerEndTurnState(stonesLeft, state, pitIndex);
         }
-        pitIndex=nextPit(pitIndex);
-        return placeStone(
+        pitIndex = nextPit(pitIndex);
+        return stepPlaceStone(
                 createNormalTurnState(stonesLeft, state, pitIndex));
     }
 
@@ -64,7 +65,16 @@ public class PitHandler {
         } else
             return state;
     }
+
     //TODO refactor this elsewhere?
+
+    private TurnState createStartTurnState(GameState state, int pitIndex) {
+        state = state.clone();
+        int inHand = state.pits()[pitIndex];
+        state.pits()[pitIndex] = 0;
+        return new TurnState(state.pits(), inHand, state.currentPlayer(), ++pitIndex, NORMAL);
+    }
+
     private TurnState createPlayerEndTurnState(int stonesLeft, TurnState state, int pitIndex) {
         return createNewTurnState(stonesLeft, state, pitIndex, PLAYER_DONE);
     }
@@ -86,4 +96,5 @@ public class PitHandler {
     private int nextPit(int pitIndex) {
         return (pitIndex + 1) % setup.pitsTotal();
     }
+
 }

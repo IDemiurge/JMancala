@@ -9,6 +9,8 @@ import mancala.game.logic.state.TurnState;
 import java.util.ArrayList;
 import java.util.List;
 
+import static mancala.game.logic.state.TurnState.StateType.NORMAL;
+
 /**
  * Created by Alexander on 12/18/2023
  */
@@ -54,7 +56,9 @@ public class GameHandler {
         return tipHandler.getTip(turnState, state);
     }
 
-    public TurnState placeStone(TurnState turnState) {
-        return pitHandler.placeStone(turnState);
+
+    public TurnState moveStones(GameState state, int pitIndex) {
+       return pitHandler.moveStones(state, pitIndex);
     }
+
 }

@@ -41,17 +41,12 @@ public class GameService implements IGameService {
 
         log.info("\n" + state.currentPlayerName() + " player move: " + pitIndex);
         handler.logState(state);
-        TurnState turnState = handler.placeStone(createStartTurnState(state, pitIndex));
+        TurnState turnState = handler.moveStones(state, pitIndex);
         log.info("\nTurn done");
         handler.logState(state);
         return createNewGameState(handler, turnState, state);
     }
 
-    private TurnState createStartTurnState(GameState state, int pitIndex) {
-        int inHand = state.pits()[pitIndex];
-        state.pits()[pitIndex] = 0;
-        return new TurnState(state.pits(), inHand, state.currentPlayer(), ++pitIndex, NORMAL);
-    }
 
     public GameHandler createGameHandler(GameSetupData data) {
         MancalaSetup setup = setupProvider.createSetup(data.mode());

@@ -10,4 +10,3 @@
             hiddenField.value = sessionStorage.getItem('tabId');
             form.appendChild(hiddenField);
         };
-        document.getElementById('tabIdDisplay').innerText = sessionStorage.getItem('tabId');

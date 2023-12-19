@@ -88,6 +88,7 @@ public class RoomService implements IRoomService {
         GameState gameState = gameService.startGame(data);
         activeGames.put(gameId, gameState);
         log.info(room.getHostUserName()+ "'s Game started with state: " + gameState);
+        room.setStarted(true);
         return gameState;
     }
 
