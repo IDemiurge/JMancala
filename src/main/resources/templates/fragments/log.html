@@ -1,0 +1,15 @@
+<table th:fragment=log>
+<!--    <thead>-->
+<!--    <tr>-->
+<!--      <th>ID</th>-->
+<!--      <th>Content</th>-->
+<!--      &lt;!&ndash; Add more headers if needed &ndash;&gt;-->
+<!--    </tr>-->
+<!--    </thead>-->
+    <tbody>
+    <tr th:each="message : ${messages}">
+      <td th:text="${message}">what?</td>
+      <!-- Add more columns if needed -->
+    </tr>
+    </tbody>
+  </table>

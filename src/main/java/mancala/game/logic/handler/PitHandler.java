@@ -46,10 +46,7 @@ public class PitHandler {
             }
             // else will just put into player's store
         }
-
-        //TODO CLONE? Can this lead to side-effect?
-        // int[] pits = Arrays.copyOf(state.pits(), state.pits().length);
-        state.pits()[pitIndex]++;
+        state = state.addStone(pitIndex);
         int stonesLeft = state.inHand() - 1;
         //use BUILDER pattern and add type as just first step?
         if (stonesLeft == 0) {

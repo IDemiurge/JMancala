@@ -1,6 +1,22 @@
 body{
     background-color: grey;
 }
+
+        .game-lobby {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 10px;
+        }
+        .game-room {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .game-button {
+            width: 100%;
+            padding: 10px;
+        }
+
+
 .pit {
     /* Styling for regular pits */
     width: 50px;

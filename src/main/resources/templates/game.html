@@ -4,28 +4,45 @@
     <script src="https://unpkg.com/htmx.org"></script>
     <title>Game Board</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+
 </head>
 <body>
 
-<!--    title, turn number, game mode -->
 <div class="mainArea">
     <label>Welcome!</label>
     <p></p>
     <div th:if="${gameState == null && hostWaiting == true}">
-        <div hx-get="/check-game-room" hx-trigger="every 1s" hx-swap="innerHTML">
+        <script th:inline="javascript">
+var tabId = /*[[${tabId}]]*/ 'defaulttabId';
+ console.log("TAB ID RELOADED: ", tabId);
+sessionStorage.setItem('tabId', tabId);
+    </script>
+        <div class="HX" id="startCheck"  hx-get="/check-game-room" hx-trigger="every 1s" hx-swap="innerHTML">
             <form hx-post="/startGame">
                 <button type="submit" disabled>Start Game</button>
             </form>
         </div>
-    </div>
 
-    <p></p>
-    <div id="board" hx-get="/syncGameState" hx-trigger="every 2s" hx-swap="innerHTML">
-        <div></div>
+        <p></p>
+
+        <div class="HX" hx-get="/syncGameState" hx-trigger="every 2s" hx-swap="innerHTML">
+            <div></div>
+        </div>
+
+        <script src="../js/HX.js"></script>
+    </div>
+    <script th:inline="javascript">
+var tabId = /*[[${tabId}]]*/ 'defaulttabId';
+ console.log("TAB ID RELOADED: ", tabId);
+sessionStorage.setItem('tabId', tabId);
+    </script>
+    <div th:if="${hostWaiting != true}">
+        <div class="HX"  hx-get="/syncGameState" hx-trigger="every 2s" hx-swap="innerHTML">
+            <div></div>
+        </div>
+
+        <script src="../js/HX.js"></script>
     </div>
 </div>
-
-<!--    exit button? -->
-<!-- if outcome != null outcomeDiv: result + confirm  -->
 </body>
 </html>

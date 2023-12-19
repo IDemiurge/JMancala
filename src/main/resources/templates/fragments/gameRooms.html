@@ -1,0 +1,8 @@
+<div th:fragment=gameRooms th:each="gameRoom, iterStat : ${games}" class="game-room">
+  <form th:action="@{'/game/' + ${gameRoom.id}}" method="get">
+    <input type="hidden" name="tabId" th:value="${tabId}" />
+    <button class="game-button" th:text="|${gameRoom.gameMode} Game, Host: ${gameRoom.hostUserName}|" >
+      <!-- Game mode letter  th:data-room-id="${gameRoom.id}" -->
+    </button>
+  </form>
+</div>

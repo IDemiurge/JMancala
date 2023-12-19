@@ -1,18 +1,18 @@
 package mancala.controller;
 
 import jakarta.servlet.http.HttpSession;
+import mancala.game.exception.GameNotFoundException;
 import mancala.game.logic.setup.MancalaGameMode;
+import mancala.game.logic.state.GameState;
 import mancala.render.HtmxConsts;
 import mancala.render.ModelAttributes;
 import mancala.room.GameRoomService;
+import mancala.utils.SessionTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static mancala.render.ModelAttributes.*;
@@ -26,46 +26,50 @@ public class GameRoomController {
     @Autowired
     GameRoomService gameGameRoomService;
 
+    @Autowired
+    SessionTools sessionTools;
+
     @PostMapping("/createGame")
-    public String createGame(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-        Object username = session.getAttribute(USERNAME);
-        if (username==null){
+    public String createGame(@RequestParam String tabId, Model model, RedirectAttributes redirectAttributes) {
+        Object username = sessionTools.getAttribute(tabId, USERNAME);
+        if (username == null) {
             //TODO
         }
         Object gameMode = model.getAttribute(GAME_MODE);
-        if (gameMode==null){
-            gameMode= MancalaGameMode.Classic;
+        if (gameMode == null) {
+            gameMode = MancalaGameMode.Classic;
         }
         String gameId = gameGameRoomService.createNewGame(username.toString(), (MancalaGameMode) gameMode);
 
-        redirectAttributes.addFlashAttribute(PLAYER_TYPE, PLAYER_TYPE_HOST);
         redirectAttributes.addFlashAttribute(HOST_WAITING, true);
-        session.setAttribute(HOSTED_GAME, gameId);
-        return "redirect:game/"+gameId; //to join your own game
+        redirectAttributes.addAttribute(TAB_ID, tabId);
+
+        sessionTools.setAttribute(tabId, HOSTED_GAME, gameId);
+
+        return "redirect:game/" + gameId; //to join your own game
     }
 
     @GetMapping("/game/{gameId}")
-    public String joinGame(@PathVariable String gameId, Model model, HttpSession session) {
+    public String joinGame(@RequestParam String tabId, @PathVariable String gameId, Model model) {
         //check re-join and refresh
-        Object username = session.getAttribute(USERNAME);
-        if (username==null){
+        String username = sessionTools.getAttribute(tabId, USERNAME);
+        if (username == null) {
             //TODO
         }
-        boolean result = gameGameRoomService.joinGame(gameId, username.toString());
-        if (result){
-            model.addAttribute(PLAYER_TYPE, PLAYER_TYPE_GUEST);
-        } else {
-            //TODO
-        }
+        int playerId = gameGameRoomService.joinGame(gameId, username);
+
+        sessionTools.setAttributeForUser(username, PLAYER_TYPE,
+                playerId == 0 ? PLAYER_TYPE_HOST : PLAYER_TYPE_GUEST);
+        model.addAttribute(TAB_ID, tabId);
+        model.addAttribute(GAME_LOG, gameGameRoomService.getGameRoom(gameId).getLog().getMessages());
         return "game";
     }
 
     @GetMapping(value = "/check-game-room", produces = "text/html")
     @ResponseBody
-    public String checkGameRoom(HttpSession session) {
-        Object gameId = session.getAttribute(HOSTED_GAME);
-        if (gameId==null){
-            //TODO
+    public String checkGameReadyToStart(@RequestParam("tabId") String tabId) {
+        String gameId = sessionTools.getAttribute(tabId, HOSTED_GAME);
+        if (gameId == null) {
             return HtmxConsts.START_BUTTON_ERROR;
         }
         if (gameGameRoomService.isReadyToStart(gameId.toString())) {
@@ -74,15 +78,27 @@ public class GameRoomController {
         return HtmxConsts.START_BUTTON_DISABLED;
     }
 
+    @GetMapping("/sync-game-rooms")
+    public String syncGameRooms(@RequestParam("tabId") String tabId, Model model) {
+        model.addAttribute(GAME_ROOMS, gameGameRoomService.fetchGames());
+        model.addAttribute(TAB_ID, tabId);
+        return "fragments/gameRooms";
+    }
+
+
     @PostMapping("/startGame")
     @ResponseBody
-    public ResponseEntity startGame(HttpSession session) {
-        Object gameId = session.getAttribute(HOSTED_GAME);
-        if (gameId==null){
-            //TODO
+    public ResponseEntity startGame(@RequestParam("tabId") String tabId) {
+        String gameId = sessionTools.getAttribute(tabId, HOSTED_GAME);
+        if (gameId == null) {
+            //TODO it's ID actually
+            throw new GameNotFoundException(tabId);
         }
-        gameGameRoomService.startGame(gameId.toString());
-        session.setAttribute(ModelAttributes.GAME_ID, gameId);
+        GameState state = gameGameRoomService.startGame(gameId.toString());
+        // sessionTools.setAttribute(tabId, ModelAttributes.GAME_ID, gameId);
+        for (String player : state.players()) {
+            sessionTools.setAttributeForUser(player, ModelAttributes.GAME_ID, gameId);
+        }
         return ResponseEntity.ok("");
     }
 }

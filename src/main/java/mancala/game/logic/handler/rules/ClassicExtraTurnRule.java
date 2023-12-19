@@ -13,8 +13,7 @@ public class ClassicExtraTurnRule implements ExtraTurnRule {
     @Override
     public TurnState enact(TurnState state) {
         log.info("Extra turnNumber for player #"+state.playerIndex());
-        //change nothing, just return state to start the same player's turnNumber over
-        return state;
+        return state.addStone(state.pitIndex());
     }
 
     @Override

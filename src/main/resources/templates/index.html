@@ -4,45 +4,37 @@
     <title>Mancala Game</title>
     <script src="https://unpkg.com/htmx.org"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <style>
-        .game-lobby {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-gap: 10px;
-        }
-        .game-room {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .game-button {
-            width: 100%;
-            padding: 10px;
-        }
-    </style>
+    <script th:inline="javascript">
+        window.onload = function() {
+var tabId = /*[[${tabId}]]*/ 'defaulttabId';
+sessionStorage.setItem('tabId', tabId);
+        };
+</script>
+    <script src="js/main.js"></script>
 </head>
 <body>
-<!-- Login Section -->
-<div id="loginSection">
-    <form th:action="@{/register}" th:object="${userForm}" method="post">
+<div id="loginSection" th:if="${tabId != null}">
+    <form  th:if="${login == null}" th:action="@{/register}" th:object="${userForm}" method="post">
         <label class="error" th:if="${login_error != null}" for="login" th:text="${login_error}"></label>
         <input id="login" type="text" th:field="*{userName}" placeholder="*{userName}" required>
+        <input type="hidden" name="tabId" th:value="${tabId}" />
         <button type="submit">Login</button>
-
     </form>
+
 </div>
 
 <div id="game-lobby" th:if="${login != null}">
+    <h1>Your unique ID for this tab is:</h1>
+    <p id="tabIdDisplay"></p>
     <form th:action="@{/createGame}" method="post">
         <button type="submit">Create Game</button>
     </form>
 
-    <div th:each="gameRoom, iterStat : ${games}" class="game-room">
-        <form th:action="@{'/game/' + ${gameRoom.id}}" method="get">
-        <button class="game-button" th:text="|${gameRoom.gameMode} Game, Host: ${gameRoom.hostUserName}|" >
-            <!-- Game mode letter  th:data-room-id="${gameRoom.id}" -->
-        </button>
-        </form>
+    <script th:src="@{js/tabIdForms.js}">
+    </script>
+    <div  class="HX" hx-get="/sync-game-rooms" hx-trigger="every 2s">
     </div>
+    <script src="../js/HX.js"></script>
 </div>
 
 </body>

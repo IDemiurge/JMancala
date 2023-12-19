@@ -38,6 +38,9 @@ public class GameRoomService {
     public GameState getGameState(String gameId) {
         return activeGames.get(gameId);
     }
+    public GameRoom getGameRoom(String gameId) {
+        return rooms.get(gameId);
+    }
 
     public String createNewGame(String hostUserName, MancalaGameMode gameMode) {
         String identifier = idGenerator.generateIdentifier(hostUserName, gameMode);
@@ -45,17 +48,25 @@ public class GameRoomService {
         gameRoom.setGameMode(gameMode);
         rooms.put(identifier, gameRoom);
         gameRoom.setId(identifier);
+
         log.info("Game room created: " + gameRoom);
+        gameRoom.getLog().add("TEST MSG");
         return identifier;
     }
 
-    public boolean joinGame(String gameId, String userName) {
+    /**
+     *
+     * @param gameId
+     * @param userName
+     * @return player's ordinal number
+     */
+    public int joinGame(String gameId, String userName) {
         GameRoom room = rooms.get(gameId);
         if (room == null)
-            return false;
+            throw new GameNotFoundException(gameId);
         room.getPlayers().add(userName);
         log.info(room.getHostUserName()+ "'s Game room joined by: " + userName);
-        return true;
+        return room.getPlayers().size()-1;
     }
 
     public GameState startGame(String gameId) {

@@ -7,23 +7,41 @@
 <label>BOARD </label>
 <div id = "gameBoard" th:if="${gameState != null}">
     <p></p>
-    <div>
-        <!--    store-->
+    <div class="Status" id="Status">
+        <label th:text="${gameState.statusMessage}"></label>
     </div>
-    <!--    <div   th:class="${playerType == 'guest' ? 'flip-vertical' : ''}">-->
+    <p></p>
+
+    <div  th:if="${playerType == null}">
+        <label>PLAYER TYPE MISSING!</label>
+        </div>
+    <div  th:if="${playerType == 'guest'}">
     <div>
         <h2>Table 1 (0 to 6)</h2>
-        <div th:replace="~{fragments/tableFragment :: tableFragment(start=0, end=6, items=items)}"></div>
+        <div th:replace="~{fragments/tableFragment :: tableFragment(enabled=false, start=0, end=6, items=items)}"></div>
     </div>
-
     <div>
         <h2>Table 2 (7 to 13)</h2>
-        <div th:replace="~{fragments/tableFragment :: tableFragment(start=7, end=13, items=items)}"></div>
+        <div th:replace="~{fragments/tableFragment :: tableFragment(enabled=${gameState.currentPlayer==1}, start=7, end=13, items=items)}"></div>
+    </div>
     </div>
 
-    <div>
-        <!--    store-->
+    <div  th:if="${playerType == 'host'}">
+        <div>
+            <h2>Table 2 (7 to 13)</h2>
+            <div th:replace="~{fragments/tableFragment :: tableFragment(enabled=false, start=7, end=13, items=items)}"></div>
+        </div>
+        <div>
+            <h2>Table 1 (0 to 6)</h2>
+            <div th:replace="~{fragments/tableFragment :: tableFragment(enabled=${gameState.currentPlayer==0}, start=0, end=6, items=items)}"></div>
+        </div>
     </div>
+
+    <p></p>
+    <div class="LOG" id="log">
+        <div th:replace="~{fragments/log :: log(messages=${messages})}"></div>
+    </div>
+
 </div>
 </body>
 </html>

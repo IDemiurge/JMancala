@@ -1,6 +1,7 @@
 package mancala.room;
 
 import mancala.game.logic.setup.MancalaGameMode;
+import mancala.game.logic.state.GameLog;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -16,10 +17,16 @@ public class GameRoom {
     private String hostUserName;
     private MancalaGameMode gameMode = MancalaGameMode.Classic;
     private Set<String> players = new LinkedHashSet<>();
+    private GameLog log;
 
     public GameRoom(String hostUserName) {
         this.hostUserName = hostUserName;
-        players.add(hostUserName);
+        this.players.add(hostUserName);
+        this.log = new GameLog();
+    }
+
+    public GameLog getLog() {
+        return log;
     }
 
     public String getHostUserName() {
