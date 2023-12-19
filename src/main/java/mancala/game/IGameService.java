@@ -6,6 +6,6 @@ public interface IGameService {
 
     GameState makeMove(GameState gameState, int pitIndex);
 
-    GameState startGame(GameData data);
+    GameState startGame(GameSetupData data);
 
 }

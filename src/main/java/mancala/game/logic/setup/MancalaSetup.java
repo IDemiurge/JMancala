@@ -4,7 +4,7 @@ public interface MancalaSetup {
     int[] startingPits();
 
     //TODO this is both the minimum and maximum number of players, could be more flexible?
-    int playersNumber();
+    int numberOfPlayers();
 
     int stonesPerPit();
 

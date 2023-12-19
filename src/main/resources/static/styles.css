@@ -2,6 +2,49 @@ body{
     background-color: grey;
 }
 
+.gameBoard {
+    display: flex;
+}
+.bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end; /* Aligns all children to the bottom */
+    height: 200px;
+}
+.top {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* Aligns all children to the bottom */
+    height: 200px;
+}
+
+.pit:disabled:hover {
+     background-color: grey; /* Same as the disabled state, no change on hover */
+ }
+.pit:hover {
+     background-color: darkblue; /* Darker background on hover */
+     /* Other hover styles */
+ }
+.pit:active {
+     background-color: green; /* Darker background on hover */
+     /* Other hover styles */
+ }
+.pit {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #000;
+    text-align: center;
+    vertical-align: middle;
+}
+.mancala {
+    min-width: 70px;
+    min-height: 150px;
+    border: 2px solid #000;
+    text-align: center;
+    vertical-align: middle;
+    background-color: lightblue;
+}
+
         .game-lobby {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -17,24 +60,7 @@ body{
         }
 
 
-.pit {
-    /* Styling for regular pits */
-    width: 50px;
-    height: 50px;
-    border: 1px solid #000;
-    text-align: center;
-    vertical-align: middle;
-}
 
   .flip-vertical {
   transform: rotateX(180deg);
   }
-.mancala {
-    /* Distinct styling for Mancala stores */
-    width: 70px;
-    height: 150px;
-    border: 2px solid #000;
-    text-align: center;
-    vertical-align: middle;
-    background-color: lightblue;
-}

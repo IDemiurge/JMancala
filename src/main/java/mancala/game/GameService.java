@@ -26,7 +26,7 @@ public class GameService implements IGameService {
     Map<String, GameHandler> gameHandlers = new ConcurrentHashMap<>();
 
     @Override
-    public GameState startGame(GameData data) {
+    public GameState startGame(GameSetupData data) {
         log.info("\nStarted a Game:" + data.identifier());
         GameHandler handler = createGameHandler(data);
         GameState state = handler.createStartingGameState();
@@ -53,7 +53,7 @@ public class GameService implements IGameService {
         return new TurnState(state.pits(), inHand, state.currentPlayer(), ++pitIndex, NORMAL);
     }
 
-    public GameHandler createGameHandler(GameData data) {
+    public GameHandler createGameHandler(GameSetupData data) {
         MancalaSetup setup = setupProvider.createSetup(data.mode());
         PitHandler pitHandler = setupProvider.createPitHandler(data.mode());
         ITipHandler tipHandler = setupProvider.createTipHandler(data.mode());

@@ -1,18 +1,18 @@
 package mancala;
 
 import lombok.extern.slf4j.Slf4j;
-import mancala.game.GameData;
+import mancala.game.GameSetupData;
 import mancala.game.IGameService;
 import mancala.game.logic.setup.MancalaGameMode;
 import mancala.game.logic.state.GameState;
 import mancala.game.utils.MancalaStringUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,12 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ClassicMancalaTests {
     @Autowired
     private IGameService gameService;
-    private GameData testGameData= new GameData("test_game", Set.of("host", "guest"), MancalaGameMode.Classic);
+    private GameSetupData testGameSetupData = new GameSetupData("test_game", Set.of("host", "guest"), MancalaGameMode.Classic);
 
     @Test
     public void testInitialGameState() {
         log.info("---> Starting test: testInitialGameState");
-        GameState initialState = gameService.startGame(testGameData);
+        GameState initialState = gameService.startGame(testGameSetupData);
 
         Assert.isTrue(initialState.pits().length == 14, "Should have 14 pits including stores");
         Assert.isTrue(initialState.pits()[6] == 0, "Player's store is empty initially");
@@ -42,7 +42,7 @@ public class ClassicMancalaTests {
     @Test
     public void testMakeMove() {
         log.info("---> Starting test: testMakeMove");
-        GameState gameState = gameService.startGame(testGameData);
+        GameState gameState = gameService.startGame(testGameSetupData);
         // Make a move and get the updated state
         GameState updatedState = gameService.makeMove(gameState, 3);
 
@@ -55,7 +55,7 @@ public class ClassicMancalaTests {
     @Test
     public void testExtraTurnRule() {
         log.info("---> Starting test: testExtraTurnRule");
-        GameState gameState = gameService.startGame(testGameData);
+        GameState gameState = gameService.startGame(testGameSetupData);
         int player = gameState.currentPlayer();
         GameState updatedState = gameService.makeMove(gameState, 0);
         Assert.isTrue(updatedState.currentPlayer() == player, "Game should have given another turnNumber to active player");
@@ -65,7 +65,7 @@ public class ClassicMancalaTests {
     @Test
     public void testCaptureRule() {
         log.info("---> Starting test: testCaptureRule");
-        GameState gameState = gameService.startGame(testGameData);
+        GameState gameState = gameService.startGame(testGameSetupData);
         gameState.pits()[0] = 1;
         gameState.pits()[1] = 0;
         GameState updatedState = gameService.makeMove(gameState, 0);
@@ -75,23 +75,26 @@ public class ClassicMancalaTests {
     }
 
     @Test
+    @DisplayName("Game Over Test")
+    //TODO CHECK THIS RULE
     public void testGameOver() {
         log.info("---> Starting test: testGameOver");
-        GameState gameState = gameService.startGame(testGameData);
+        GameState gameState = gameService.startGame(testGameSetupData);
         int[] pits = new int[]{
                 6, 0, 0, 0, 0, 0, 1, 7, 7, 6, 6, 6, 6, 0
         };
         gameState = GameState.builder().copyFields(gameState).pits(pits).build();
 
         GameState updatedState = gameService.makeMove(gameState, 0);
-        Assert.isTrue(updatedState.gameOver(), "Game should have ended");
+        Assert.isTrue(updatedState.gameOver(), "Game should have ended because player clears their last non-empty pit");
 
     }
     @Test
-    public void testGame() {
+    @DisplayName("Game Test")
+    public void testGame5Turns() {
         log.info("---> Starting test: testGame");
         int[] pits;
-        GameState state = gameService.startGame(testGameData);
+        GameState state = gameService.startGame(testGameSetupData);
 
         state = gameService.makeMove(state, 2);
 

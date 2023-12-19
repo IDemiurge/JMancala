@@ -13,7 +13,10 @@ sessionStorage.setItem('tabId', tabId);
     <script src="js/main.js"></script>
 </head>
 <body>
-<div id="loginSection" th:if="${tabId != null}">
+<div id="errorSection" th:if="${tabId == null}">
+    <label class="error">TAB ID MISSING!</label>
+</div>
+<div id="loginSection" th:if="${tabId != null && login == null}">
     <form  th:if="${login == null}" th:action="@{/register}" th:object="${userForm}" method="post">
         <label class="error" th:if="${login_error != null}" for="login" th:text="${login_error}"></label>
         <input id="login" type="text" th:field="*{userName}" placeholder="*{userName}" required>
@@ -30,11 +33,11 @@ sessionStorage.setItem('tabId', tabId);
         <button type="submit">Create Game</button>
     </form>
 
-    <script th:src="@{js/tabIdForms.js}">
+    <script th:src="@{js/setup-forms-tab-id-param.js}">
     </script>
-    <div  class="HX" hx-get="/sync-game-rooms" hx-trigger="every 2s">
+    <div  class="HX" hx-get="/fetchGameRooms" hx-trigger="every 2s">
     </div>
-    <script src="../js/HX.js"></script>
+    <script src="../js/setup-hx-vals.js"></script>
 </div>
 
 </body>

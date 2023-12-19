@@ -1,7 +1,7 @@
 package mancala.game.logic.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import mancala.game.GameData;
+import mancala.game.GameSetupData;
 import mancala.game.logic.setup.MancalaSetup;
 import mancala.game.logic.state.GameState;
 import mancala.game.logic.state.TurnState;
@@ -14,13 +14,13 @@ import java.util.List;
  */
 @Slf4j
 public class GameHandler {
-    private final GameData data;
+    private final GameSetupData data;
     private final PitHandler pitHandler;
     private final ITipHandler tipHandler;
     private final MancalaSetup setup;
     // GameHistory history;
 
-    public GameHandler(GameData data, PitHandler pitHandler, ITipHandler tipHandler, MancalaSetup setup) {
+    public GameHandler(GameSetupData data, PitHandler pitHandler, ITipHandler tipHandler, MancalaSetup setup) {
         this.data = data;
         this.pitHandler = pitHandler;
         this.tipHandler = tipHandler;
@@ -47,7 +47,7 @@ public class GameHandler {
     }
 
     public int nextPlayer(int playerIndex) {
-        return (playerIndex + 1) % setup.playersNumber();
+        return (playerIndex + 1) % setup.numberOfPlayers();
     }
 
     public String getTip(TurnState turnState, GameState state) {

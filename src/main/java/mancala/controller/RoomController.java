@@ -1,12 +1,11 @@
 package mancala.controller;
 
-import jakarta.servlet.http.HttpSession;
 import mancala.game.exception.GameNotFoundException;
 import mancala.game.logic.setup.MancalaGameMode;
 import mancala.game.logic.state.GameState;
 import mancala.render.HtmxConsts;
 import mancala.render.ModelAttributes;
-import mancala.room.GameRoomService;
+import mancala.room.RoomService;
 import mancala.utils.SessionTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +20,10 @@ import static mancala.render.ModelAttributes.*;
  * Created by Alexander on 12/18/2023
  */
 @Controller
-public class GameRoomController {
+public class RoomController {
 
     @Autowired
-    GameRoomService gameGameRoomService;
+    RoomService roomService;
 
     @Autowired
     SessionTools sessionTools;
@@ -39,12 +38,14 @@ public class GameRoomController {
         if (gameMode == null) {
             gameMode = MancalaGameMode.Classic;
         }
-        String gameId = gameGameRoomService.createNewGame(username.toString(), (MancalaGameMode) gameMode);
+        String gameId = roomService.createNewGame(username.toString(), (MancalaGameMode) gameMode);
 
         redirectAttributes.addFlashAttribute(HOST_WAITING, true);
         redirectAttributes.addAttribute(TAB_ID, tabId);
 
         sessionTools.setAttribute(tabId, HOSTED_GAME, gameId);
+
+        sessionTools.populateModel(model, tabId); //redundant?
 
         return "redirect:game/" + gameId; //to join your own game
     }
@@ -56,12 +57,13 @@ public class GameRoomController {
         if (username == null) {
             //TODO
         }
-        int playerId = gameGameRoomService.joinGame(gameId, username);
+        int playerId = roomService.joinGame(gameId, username);
 
         sessionTools.setAttributeForUser(username, PLAYER_TYPE,
                 playerId == 0 ? PLAYER_TYPE_HOST : PLAYER_TYPE_GUEST);
-        model.addAttribute(TAB_ID, tabId);
-        model.addAttribute(GAME_LOG, gameGameRoomService.getGameRoom(gameId).getLog().getMessages());
+        model.addAttribute(GAME_LOG, roomService.getGameRoom(gameId).getLog().getMessages());
+
+        sessionTools.populateModel(model, tabId);
         return "game";
     }
 
@@ -72,16 +74,16 @@ public class GameRoomController {
         if (gameId == null) {
             return HtmxConsts.START_BUTTON_ERROR;
         }
-        if (gameGameRoomService.isReadyToStart(gameId.toString())) {
+        if (roomService.isReadyToStart(gameId.toString())) {
             return HtmxConsts.START_BUTTON_ENABLED;
         }
         return HtmxConsts.START_BUTTON_DISABLED;
     }
 
-    @GetMapping("/sync-game-rooms")
+    @GetMapping("/fetchGameRooms")
     public String syncGameRooms(@RequestParam("tabId") String tabId, Model model) {
-        model.addAttribute(GAME_ROOMS, gameGameRoomService.fetchGames());
-        model.addAttribute(TAB_ID, tabId);
+        model.addAttribute(GAME_ROOMS, roomService.fetchGames());
+        sessionTools.populateModel(model, tabId);
         return "fragments/gameRooms";
     }
 
@@ -94,8 +96,8 @@ public class GameRoomController {
             //TODO it's ID actually
             throw new GameNotFoundException(tabId);
         }
-        GameState state = gameGameRoomService.startGame(gameId.toString());
-        // sessionTools.setAttribute(tabId, ModelAttributes.GAME_ID, gameId);
+        GameState state = roomService.startGame(gameId.toString());
+
         for (String player : state.players()) {
             sessionTools.setAttributeForUser(player, ModelAttributes.GAME_ID, gameId);
         }

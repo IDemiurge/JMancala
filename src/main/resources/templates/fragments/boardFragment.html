@@ -5,6 +5,7 @@
 </head>
 <body>
 <label>BOARD </label>
+
 <div id = "gameBoard" th:if="${gameState != null}">
     <p></p>
     <div class="Status" id="Status">
@@ -17,23 +18,23 @@
         </div>
     <div  th:if="${playerType == 'guest'}">
     <div>
-        <h2>Table 1 (0 to 6)</h2>
-        <div th:replace="~{fragments/tableFragment :: tableFragment(enabled=false, start=0, end=6, items=items)}"></div>
+        <h2>Enemy Pits</h2>
+        <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=false, left=true, enabled=false, start=0, end=6, items=items)}"></div>
     </div>
     <div>
-        <h2>Table 2 (7 to 13)</h2>
-        <div th:replace="~{fragments/tableFragment :: tableFragment(enabled=${gameState.currentPlayer==1}, start=7, end=13, items=items)}"></div>
+        <h2>Your Pits</h2>
+        <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=true, left=false, enabled=${gameState.currentPlayer==1}, start=7, end=13, items=items)}"></div>
     </div>
     </div>
 
     <div  th:if="${playerType == 'host'}">
-        <div>
-            <h2>Table 2 (7 to 13)</h2>
-            <div th:replace="~{fragments/tableFragment :: tableFragment(enabled=false, start=7, end=13, items=items)}"></div>
+        <div >
+            <h2>Enemy Pits</h2>
+            <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=false, left=true, enabled=false, start=7, end=13, items=items)}"></div>
         </div>
-        <div>
-            <h2>Table 1 (0 to 6)</h2>
-            <div th:replace="~{fragments/tableFragment :: tableFragment(enabled=${gameState.currentPlayer==0}, start=0, end=6, items=items)}"></div>
+        <div >
+            <h2>Your Pits</h2>
+            <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=true, left=false, enabled=${gameState.currentPlayer==0}, start=0, end=6, items=items)}"></div>
         </div>
     </div>
 

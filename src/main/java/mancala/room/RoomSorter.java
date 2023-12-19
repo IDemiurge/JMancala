@@ -5,9 +5,9 @@ import java.util.Comparator;
 /**
  * Created by Alexander on 12/17/2023
  */
-public class GameRoomSorter implements Comparator<GameRoom> {
+public class RoomSorter implements Comparator<Room> {
     @Override
-    public int compare(GameRoom o1, GameRoom o2) {
+    public int compare(Room o1, Room o2) {
         //TODO status? created at?
         if (o1.getGameMode() != o2.getGameMode()) {
             return o1.getGameMode().abbreviation.compareTo(o2.getGameMode().abbreviation);

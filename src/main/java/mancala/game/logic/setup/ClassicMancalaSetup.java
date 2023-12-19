@@ -14,9 +14,9 @@ public class ClassicMancalaSetup implements MancalaSetup {
 
     @Override
     public int[] startingPits() {
-        int[] pits = new int[playersNumber() + pitsPerPlayer() * playersNumber()];
+        int[] pits = new int[numberOfPlayers() + pitsPerPlayer() * numberOfPlayers()];
         Arrays.fill(pits, stonesPerPit());
-        for (int i = 0; i < playersNumber(); i++) {
+        for (int i = 0; i < numberOfPlayers(); i++) {
             pits[i + (1 + i) * pitsPerPlayer()] = 0;
         }
         return pits;
@@ -24,7 +24,7 @@ public class ClassicMancalaSetup implements MancalaSetup {
 
     @Override
     public boolean isStoreIndex(int index) {
-        for (int i = 0; i < playersNumber(); i++) {
+        for (int i = 0; i < numberOfPlayers(); i++) {
             if (isThisPlayerStoreIndex(index, i)) {
                 return true;
             }
@@ -40,7 +40,7 @@ public class ClassicMancalaSetup implements MancalaSetup {
     }
 
     @Override
-    public int playersNumber() {
+    public int numberOfPlayers() {
         return PLAYERS;
     }
 

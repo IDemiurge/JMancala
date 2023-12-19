@@ -1,8 +1,8 @@
 package mancala.configuration;
 
 import mancala.room.GameIdGenerator;
-import mancala.room.GameRoom;
-import mancala.room.GameRoomSorter;
+import mancala.room.Room;
+import mancala.room.RoomSorter;
 import mancala.utils.SessionTools;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +21,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    Comparator<GameRoom> sorter() {
-        return new GameRoomSorter();
+    Comparator<Room> sorter() {
+        return new RoomSorter();
     }
 
     @Bean

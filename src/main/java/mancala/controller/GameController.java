@@ -1,8 +1,7 @@
 package mancala.controller;
 
-import jakarta.servlet.http.HttpSession;
 import mancala.game.logic.state.GameState;
-import mancala.room.GameRoomService;
+import mancala.room.RoomService;
 import mancala.utils.SessionTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,14 +16,12 @@ import static mancala.render.ModelAttributes.*;
 public class GameController {
 
     @Autowired
-    GameRoomService gameGameRoomService;
+    RoomService gameGameRoomService;
     @Autowired
     SessionTools sessionTools;
 
     @PostMapping("/makeMove")
-
-    public String makeMove(@RequestParam("tabId") String tabId, @RequestParam("pitIndex") int pitIndex, Model model, HttpSession session) {
-        //TODO security - at least check if the right player is making this move
+    public String makeMove(@RequestParam("tabId") String tabId, @RequestParam("pitIndex") int pitIndex, Model model) {
         String gameId = sessionTools.getAttribute(tabId, GAME_ID);
         GameState gameState = gameGameRoomService.makeMove(gameId, pitIndex);
         if (gameState.gameOver()) {

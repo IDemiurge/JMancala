@@ -1,17 +1,25 @@
-<table th:fragment=tableFragment>
-  <tbody>
-  <tr th:each="i : ${#numbers.sequence(start, end-1)}">
-    <td th:text="${gameState.pits[i]}">
-    </td>
-    <td>
-      <form th:if="${enabled == true}" hx-post="/makeMove" hx-target="#gameBoard" hx-swap="outerHTML">
+<div th:class="${ bottom? 'bottom' : 'top' }" th:fragment=tableFragment>
+
+  <div class="mancala"  th:if="${left == true}" >
+    <label th:text="|Store: ${gameState.pits[end]}|">
+    </label>
+  </div>
+  <div class="gameBoard">
+  <div  th:each="i : ${#numbers.sequence(start, end-1)}">
+      <form  hx-post="/makeMove" hx-target="#gameBoard" hx-swap="outerHTML">
         <input type="hidden" name="pitIndex" th:value="${i}" />
-        <button type="submit">Make Move</button>
+        <div th:if="${enabled == true}">
+        <button class="pit" type="submit" th:text="${gameState.pits[i]}">Make Move</button>
+        </div>
+        <div th:if="${enabled != true}">
+        <button class="pit" type="submit" th:text="${gameState.pits[i]}" disabled>Make Move</button>
+        </div>
       </form>
-    </td>
-  </tr>
-  <tr>
-    <td th:text="|Store: ${gameState.pits[end]}|">
-  </tr>
-  </tbody>
-</table>
+  </div>
+  </div>
+
+  <div class="mancala"  th:if="${left != true}" >
+    <label th:text="|Store: ${gameState.pits[end]}|">
+    </label>
+  </div>
+</div>

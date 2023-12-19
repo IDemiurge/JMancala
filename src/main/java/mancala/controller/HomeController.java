@@ -1,9 +1,9 @@
 package mancala.controller;
 
-import mancala.room.GameRoom;
+import mancala.room.Room;
 import mancala.user.UserForm;
 import mancala.user.UserStore;
-import mancala.room.GameRoomService;
+import mancala.room.RoomService;
 import mancala.utils.SessionTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.UUID;
 
+import static mancala.render.ModelAttributes.LOGIN;
 import static mancala.render.ModelAttributes.USERNAME;
 
 /**
@@ -27,7 +28,7 @@ public class HomeController {
     @Autowired
     private UserStore userStore;
     @Autowired
-    private GameRoomService gameRoomService;
+    private RoomService gameRoomService;
     @Autowired
     SessionTools sessionTools;
 
@@ -38,6 +39,11 @@ public class HomeController {
         model.addAttribute("tabId", tabId);
         return "index";
     }
+    @GetMapping("/back")
+    public String backHome(@RequestParam String tabId, Model model) {
+        sessionTools.populateModel(model, tabId);
+        return "index";
+    }
 
     @PostMapping("/register")
     public String registerUser(@RequestParam String tabId, Model model, @ModelAttribute("userForm") UserForm userForm) {
@@ -45,8 +51,8 @@ public class HomeController {
         if (userStore.registerUser(userName)) {
             sessionTools.setAttribute(tabId, USERNAME, userName);
             sessionTools.setUserIdentifier(userName, tabId);
-            model.addAttribute("login", userName);
-            List<GameRoom> games = gameRoomService.fetchGames();
+            model.addAttribute(LOGIN, userName);
+            List<Room> games = gameRoomService.fetchGames();
             model.addAttribute("games", games);
         } else {
             model.addAttribute("login_error", "Username already taken");

@@ -2,7 +2,6 @@ package mancala.game.logic.handler;
 
 import mancala.game.logic.setup.MancalaSetup;
 import mancala.game.logic.state.TurnState;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by Alexander on 12/12/2023
@@ -15,7 +14,7 @@ public class OutcomeHandler {
     }
 
     public int getWinner(TurnState state) {
-        for (int i = 0; i < setup.playersNumber(); i++) {
+        for (int i = 0; i < setup.numberOfPlayers(); i++) {
             if (checkPlayerPits(state, i * setup.pitsPerPlayer(), (i + 1) * setup.pitsPerPlayer()
             , i //account for stores
             )) {

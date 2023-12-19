@@ -8,6 +8,7 @@ public class ModelAttributes {
     public static final String PLAYER_TYPE_GUEST = "guest";
     public static final String PLAYER_TYPE_HOST = "host";
     public static final String USERNAME = "username";
+    public static final String LOGIN = "login";
     public static final String GAME_STATE = "gameState";
     public static final String GAME_MODE = "gameMode";
     public static final String HOSTED_GAME = "hostedGame";
