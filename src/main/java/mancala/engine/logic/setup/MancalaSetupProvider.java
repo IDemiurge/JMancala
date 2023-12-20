@@ -11,7 +11,7 @@ import mancala.engine.logic.rules.IRulesHandler;
 /**
  * Created by Alexander on 12/18/2023
  */
-public class MancalaSetupProvider implements IMancalaSetupProvider{
+public class MancalaSetupProvider implements IMancalaSetupProvider {
     @Override
     public MancalaSetup createSetup(MancalaGameMode mode) {
         return switch (mode) {
@@ -26,8 +26,11 @@ public class MancalaSetupProvider implements IMancalaSetupProvider{
     }
 
     private IRulesHandler createRulesHandler(MancalaGameMode mode) {
-      return switch (mode) {
-            case Classic -> new ClassicRulesHandler();
+        MancalaSetup setup = createSetup(mode);
+        return switch (mode) {
+            case Classic -> {
+                yield new ClassicRulesHandler(setup);
+            }
             case Kalaha -> null; //TODO
         };
     }

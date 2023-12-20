@@ -5,7 +5,6 @@ import mancala.common.exception.MoveValidationException;
 import mancala.engine.logic.setup.IMancalaSetupProvider;
 import mancala.engine.logic.setup.MancalaSetup;
 import mancala.web.room.Room;
-import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -16,30 +15,36 @@ import java.util.ArrayList;
 @Slf4j
 public class MoveValidator {
 
+    public static final String WRONG_PLAYER_INDEX = "Invalid player index: ";
+    public static final String WRONG_PIT_INDEX = "Invalid pit index: ";
+    public static final String NOT_PLAYERS_PIT = " is not pit index of player #: ";
+
     @Autowired
-    IMancalaSetupProvider provider;
+    private IMancalaSetupProvider provider;
 
     //TODO
     public void validate(String userName, int pitIndex, Room room) {
         MancalaSetup setup = provider.createSetup(room.getGameMode());
         int playerIndex = new ArrayList<>(room.getPlayers()).indexOf(userName);
-        String error = getValidationError(setup, playerIndex, pitIndex);
+        String error = getValidationErrorMessage(setup, playerIndex, pitIndex);
         if (error != null) {
-            log.info(Marker.ANY_MARKER, "Invalid move request: ",1,1,1);
+            log.info("Invalid move request: " + userName + " moves pit #" + pitIndex);
             throw new MoveValidationException(error);
         } else {
-            log.info("Valid move request: ");
+            log.info("Valid move request: " + userName + " moves pit #" + pitIndex);
         }
     }
 
-    public String getValidationError(MancalaSetup setup, int playerIndex, int pitIndex) {
+    public String getValidationErrorMessage(MancalaSetup setup, int playerIndex, int pitIndex) {
         if (playerIndex < 0) {
-            //localization
-            // return StringConsts.VALIDATION_PLAYER_INDEX;
+            return WRONG_PLAYER_INDEX + playerIndex;
         }
         if (pitIndex > setup.stores()[playerIndex]) {
-            // return StringConsts.VALIDATION_PLAYER_INDEX;
+            return WRONG_PIT_INDEX + pitIndex;
+        }
+        if (!setup.isPlayersPit(playerIndex, pitIndex)) {
+            return pitIndex + NOT_PLAYERS_PIT + playerIndex;
         }
         return null;
-}
+    }
 }

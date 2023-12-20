@@ -18,5 +18,5 @@ public interface MancalaSetup {
 
     int pitsTotal();
 
-    String getName();
+    boolean isPlayersPit(int playerIndex, int pitIndex);
 }

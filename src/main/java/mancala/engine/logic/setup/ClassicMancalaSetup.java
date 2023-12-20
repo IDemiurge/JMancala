@@ -66,7 +66,17 @@ public class ClassicMancalaSetup implements MancalaSetup {
     }
 
     @Override
-    public String getName() {
-        return "Classic";
+    public boolean isPlayersPit(int playerIndex, int pitIndex) {
+        if (playerIndex==0) {
+            if (pitIndex>5) {
+                return false;
+            }
+        }
+        if (playerIndex==1) {
+            if (pitIndex<7) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -3,8 +3,6 @@ package mancala.common.utils;
 import mancala.common.exception.MathException;
 import mancala.engine.logic.setup.MancalaSetup;
 
-import java.util.Arrays;
-
 /**
  * Created by Alexander on 12/13/2023
  */
@@ -17,12 +15,11 @@ public class MancalaMathUtils {
         int dstToStore = Math.abs(pitsPerPlayer - index);
         int diff = dstToStore * 2 + 2;
         int opposite = (playerIndex == 0 ? diff - index : index - diff);
-        if (opposite < 0 || opposite >= pitsTotal){
-            throw new MathException("Opposite pit calculation produced wrong result "+ opposite
-                    +
-                    "index: " +index+
-                    "playerIndex: " +playerIndex+
-                    "pitsPerPlayer: " +pitsPerPlayer);
+        if (opposite < 0 || opposite >= pitsTotal) {
+            throw new MathException("Opposite pit calculation produced wrong result: " + opposite +
+                    "\nindex: " + index +
+                    "\nplayerIndex: " + playerIndex +
+                    "\npitsPerPlayer: " + pitsPerPlayer);
         }
         return opposite;
 
@@ -33,7 +30,7 @@ public class MancalaMathUtils {
     }
 
     public static int translateToPlayerPitIndex(int pitIndex, int currentPlayer, MancalaSetup setup) {
-        return (pitIndex-currentPlayer)%setup.pitsPerPlayer();
+        return (pitIndex - currentPlayer) % setup.pitsPerPlayer();
     }
 
 }

@@ -1,5 +1,6 @@
 package mancala.engine.logic.rules;
 
+import mancala.engine.logic.setup.MancalaSetup;
 import mancala.engine.logic.state.TurnState;
 
 /**
@@ -7,8 +8,13 @@ import mancala.engine.logic.state.TurnState;
  */
 public class ClassicRulesHandler implements IRulesHandler {
 
-    CaptureRule captureRule = new ClassicCaptureRule();
-    ExtraTurnRule extraTurnRule = new ClassicExtraTurnRule();
+    private final CaptureRule captureRule;
+    private final ExtraTurnRule extraTurnRule;
+
+    public ClassicRulesHandler(MancalaSetup setup) {
+         captureRule = new ClassicCaptureRule(setup);
+         extraTurnRule = new ClassicExtraTurnRule(setup);
+    }
 
     @Override
     public TurnState checkFinalStoneRules(TurnState state) {
