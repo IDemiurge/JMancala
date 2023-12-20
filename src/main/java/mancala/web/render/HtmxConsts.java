@@ -1,7 +1,7 @@
 package mancala.web.render;
 
 /**
- * Created by Alexander on 12/18/2023
+ * 
  */
 public class HtmxConsts {
     public static final String START_BUTTON_ENABLED =

@@ -2,13 +2,14 @@ package mancala.web.room;
 
 import mancala.common.exception.GameRoomException;
 import mancala.common.MancalaGameMode;
+import mancala.common.utils.Log;
 import mancala.engine.logic.setup.MancalaSetup;
 import mancala.engine.logic.state.GameLog;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Created by Alexander on 12/17/2023
+ * 
  */
 public class Room {
     //TODO id here?
@@ -20,10 +21,12 @@ public class Room {
     private MancalaSetup gameSetup;
     private boolean started;
 
-    public Room(String hostUserName) {
+    public Room(String id, String hostUserName) {
+        this.id = id;
         this.hostUserName = hostUserName;
         this.players.add(hostUserName);
         this.log = new GameLog();
+        Log.registerLog(id, this.log);
     }
 
     public GameLog getLog() {
@@ -44,10 +47,6 @@ public class Room {
 
     public void setGameMode(MancalaGameMode gameMode) {
         this.gameMode = gameMode;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getId() {

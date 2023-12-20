@@ -4,7 +4,7 @@ import mancala.engine.logic.setup.ClassicMancalaSetup;
 import mancala.engine.logic.setup.MancalaSetup;
 
 /**
- * Created by Alexander on 12/14/2023
+ * 
  */
 public class MancalaStringUtils {
     public static String prettyPits(int[] pits) {

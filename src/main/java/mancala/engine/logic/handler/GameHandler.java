@@ -1,6 +1,7 @@
 package mancala.engine.logic.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import mancala.common.utils.Log;
 import mancala.common.utils.MancalaStringUtils;
 import mancala.engine.logic.setup.GameSetupData;
 import mancala.engine.logic.setup.MancalaSetup;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Alexander on 12/18/2023
+ * 
  */
 @Slf4j
 public class GameHandler {
@@ -21,20 +22,18 @@ public class GameHandler {
     private final PitHandler pitHandler;
     private final ITipHandler tipHandler;
     private final MancalaSetup setup;
-    private final GameLog gameLog;
 
-
-    public GameHandler(GameSetupData data, PitHandler pitHandler, ITipHandler tipHandler, MancalaSetup setup,
-                       GameLog gameLog) {
+    public GameHandler(GameSetupData data, PitHandler pitHandler, ITipHandler tipHandler, MancalaSetup setup) {
         this.data = data;
         this.pitHandler = pitHandler;
         this.tipHandler = tipHandler;
         this.setup = setup;
-        this.gameLog = gameLog;
     }
 
 
-    public GameState createStartingGameState() {
+    public GameState start() {
+        String message = "\nStarting a Game:" + data.identifier();
+        log(message);
         List<String> players = new ArrayList<>(data.players());
         return GameState.builder()
                 .turnNumber(1)
@@ -70,12 +69,11 @@ public class GameHandler {
     }
 
     private void log(String message) {
-        log.info("\nState: " + message);
-        if (gameLog != null) {
-            gameLog.addMessage(message);
-        }
+        log.info(message);
+        Log.info(data.identifier(), message);
     }
+
     private void logState(GameState state) {
-        log(MancalaStringUtils.prettyPits(state.pits(), setup));
+        log.info("\nState: " + MancalaStringUtils.prettyPits(state.pits(), setup));
     }
 }

@@ -1,11 +1,10 @@
 package mancala.engine.logic.rules;
 
-import lombok.extern.slf4j.Slf4j;
+import mancala.common.utils.Log;
 import mancala.engine.logic.setup.MancalaSetup;
 import mancala.engine.logic.state.TurnState;
 import mancala.common.utils.MancalaMathUtils;
 
-@Slf4j
 public class ClassicCaptureRule implements CaptureRule {
 
     private final MancalaSetup setup;
@@ -20,7 +19,7 @@ public class ClassicCaptureRule implements CaptureRule {
         int index = MancalaMathUtils.getOppositePit(setup.pitsPerPlayer(),
                 state.pitIndex(), state.playerIndex(), setup.pitsTotal());
         int captured = clone.pits()[index];
-        log.info("Captured " + captured + " stones from opposite pit #" + index);
+        Log.info(state.gameIdentifier(), "Captured " + captured + " stones from opposite pit #" + index);
         clone.pits()[index] = 0;
         clone.pits()[setup.stores()[clone.playerIndex()]] += captured + 1; //account for the final stone itself
         return state;

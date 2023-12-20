@@ -5,7 +5,7 @@ import mancala.engine.logic.handler.GameHandler;
 import java.util.List;
 
 /**
- * Created by Alexander on 12/20/2023
+ * 
  */
 public class GameStateBuilder {
     private int turnNumber;

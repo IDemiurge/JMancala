@@ -9,7 +9,7 @@
       <form  hx-post="/makeMove" hx-target="#gameBoard" hx-swap="outerHTML">
         <input type="hidden" name="pitIndex" th:value="${i}" />
         <div th:if="${enabled == true}">
-        <button class="pit" type="submit" th:text="${gameState.pits[i]}">Make Move</button>
+        <button class="pit" type="submit" th:text="${gameState.pits[i]}"></button>
         </div>
         <div th:if="${enabled != true}">
         <button class="pit" type="submit" th:text="${gameState.pits[i]}" disabled>Make Move</button>

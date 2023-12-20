@@ -55,6 +55,7 @@ box-shadow: inset 0px 20px 10px rgba(0,0,0,0.6);
     border: 3px solid #A65E2E;
     text-align: center;
     vertical-align: middle;
+    color: #FFF
 }
 .pit:disabled:hover {
      background: #79430d;

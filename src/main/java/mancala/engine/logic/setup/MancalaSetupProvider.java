@@ -9,7 +9,7 @@ import mancala.engine.logic.rules.ClassicRulesHandler;
 import mancala.engine.logic.rules.IRulesHandler;
 
 /**
- * Created by Alexander on 12/18/2023
+ * 
  */
 public class MancalaSetupProvider implements IMancalaSetupProvider {
     @Override

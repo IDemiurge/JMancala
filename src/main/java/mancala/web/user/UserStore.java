@@ -1,7 +1,7 @@
 package mancala.web.user;
 
 /**
- * Created by Alexander on 12/17/2023
+ * 
  */
 import java.util.Collections;
 import java.util.Set;

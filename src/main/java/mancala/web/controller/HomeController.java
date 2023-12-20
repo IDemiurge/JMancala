@@ -19,7 +19,7 @@ import java.util.UUID;
 import static mancala.web.render.ModelAttributes.*;
 
 /**
- * Created by Alexander on 12/14/2023
+ * 
  */
 @Controller
 public class HomeController {

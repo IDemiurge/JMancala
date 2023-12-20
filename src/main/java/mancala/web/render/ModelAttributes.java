@@ -1,7 +1,7 @@
 package mancala.web.render;
 
 /**
- * Created by Alexander on 12/17/2023
+ * 
  */
 public class ModelAttributes {
     public static final String PLAYER_TYPE = "playerType";

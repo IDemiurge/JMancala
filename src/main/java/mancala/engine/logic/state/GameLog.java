@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Alexander on 12/19/2023
+ * 
  */
 public class GameLog {
     public final List<String> messages = new ArrayList<>();

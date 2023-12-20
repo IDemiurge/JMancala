@@ -6,7 +6,7 @@ import mancala.engine.logic.state.GameState;
 import mancala.engine.logic.state.TurnState;
 
 /**
- * Created by Alexander on 12/11/2023
+ * 
  */
 public class TipHandler implements ITipHandler {
 

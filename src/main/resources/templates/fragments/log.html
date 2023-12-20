@@ -1,4 +1,5 @@
-<table th:fragment=log>
+<div th:fragment=log>
+    <h2> Game Log</h2>
 <!--    <thead>-->
 <!--    <tr>-->
 <!--      <th>ID</th>-->
@@ -6,11 +7,7 @@
 <!--      &lt;!&ndash; Add more headers if needed &ndash;&gt;-->
 <!--    </tr>-->
 <!--    </thead>-->
-    <tbody>
-    <tr th:each="message : ${messages}">
-        <td th:text="${message}">what?</td>
-        <td >what?</td>
-      <!-- Add more columns if needed -->
-    </tr>
-    </tbody>
-  </table>
+    <div th:each="message, iterStat : ${messages}">
+        <div th:text="${message}">what?</div>
+    </div>
+  </div>

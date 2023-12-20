@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static mancala.engine.logic.state.TurnState.StateType.*;
 
 /**
- * Created by Alexander on 12/11/2023
+ * 
  */
 public class PitHandler {
 
@@ -72,7 +72,7 @@ public class PitHandler {
         state = state.clone();
         int inHand = state.pits()[pitIndex];
         state.pits()[pitIndex] = 0;
-        return new TurnState(state.pits(), inHand, state.currentPlayer(), ++pitIndex, NORMAL);
+        return new TurnState(state.pits(), inHand, state.currentPlayer(), ++pitIndex, NORMAL, state.identifier());
     }
 
     private TurnState createPlayerEndTurnState(int stonesLeft, TurnState state, int pitIndex) {
@@ -90,7 +90,7 @@ public class PitHandler {
     private TurnState createNewTurnState(int stonesLeft, TurnState state, int pitIndex, TurnState.StateType type) {
         return new TurnState(
                 state.pits(), stonesLeft, state.playerIndex(),
-                pitIndex, type);
+                pitIndex, type, state.gameIdentifier());
     }
 
     private int nextPit(int pitIndex) {

@@ -4,7 +4,7 @@ import mancala.common.exception.MathException;
 import mancala.engine.logic.setup.MancalaSetup;
 
 /**
- * Created by Alexander on 12/13/2023
+ * 
  */
 public class MancalaMathUtils {
 

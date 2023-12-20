@@ -4,7 +4,7 @@ import mancala.engine.logic.setup.MancalaSetup;
 import mancala.engine.logic.state.TurnState;
 
 /**
- * Created by Alexander on 12/13/2023
+ * 
  */
 public class ClassicRulesHandler implements IRulesHandler {
 

@@ -1,15 +1,14 @@
 package mancala.engine.logic.rules;
 
-import lombok.extern.slf4j.Slf4j;
+import mancala.common.utils.Log;
+import mancala.common.utils.MancalaMathUtils;
 import mancala.engine.logic.setup.ClassicMancalaSetup;
 import mancala.engine.logic.setup.MancalaSetup;
 import mancala.engine.logic.state.TurnState;
-import mancala.common.utils.MancalaMathUtils;
 
 /**
- * Created by Alexander on 12/13/2023
+ * 
  */
-@Slf4j
 public class ClassicExtraTurnRule implements ExtraTurnRule {
 
     private final MancalaSetup setup;
@@ -19,7 +18,7 @@ public class ClassicExtraTurnRule implements ExtraTurnRule {
     }
     @Override
     public TurnState enact(TurnState state) {
-        log.info("Extra turn for player #"+state.playerIndex());
+        Log.info(state.gameIdentifier(), "Extra turn for player #"+state.playerIndex());
         return state.addStone(state.pitIndex());
     }
 

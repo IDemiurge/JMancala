@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Created by Alexander on 12/11/2023
+ * 
  */
 @SpringBootTest(classes={MancalaConfig.class, ServiceConfig.class})
 @Slf4j

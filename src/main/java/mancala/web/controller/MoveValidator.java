@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 
 /**
- * Created by Alexander on 12/19/2023
+ * 
  */
 @Slf4j
 public class MoveValidator {

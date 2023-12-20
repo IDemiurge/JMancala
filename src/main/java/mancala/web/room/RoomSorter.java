@@ -3,7 +3,7 @@ package mancala.web.room;
 import java.util.Comparator;
 
 /**
- * Created by Alexander on 12/17/2023
+ * 
  */
 public class RoomSorter implements Comparator<Room> {
     @Override

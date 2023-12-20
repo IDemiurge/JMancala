@@ -3,6 +3,7 @@ package mancala.web.controller;
 import mancala.common.exception.GameNotFoundException;
 import mancala.common.exception.UserNotFoundException;
 import mancala.common.MancalaGameMode;
+import mancala.common.utils.Log;
 import mancala.engine.logic.state.GameState;
 import mancala.web.render.HtmxConsts;
 import mancala.web.render.ModelAttributes;
@@ -18,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import static mancala.web.render.ModelAttributes.*;
 
 /**
- * Created by Alexander on 12/18/2023
+ * 
  */
 @Controller
 public class RoomController {
@@ -62,7 +63,7 @@ public class RoomController {
 
         sessionTools.setAttributeForUser(username, PLAYER_TYPE,
                 playerId == 0 ? PLAYER_TYPE_HOST : PLAYER_TYPE_GUEST);
-        model.addAttribute(GAME_LOG, roomService.getGameRoom(gameId).getLog().getMessages());
+        model.addAttribute(GAME_LOG, Log.getLog(gameId).getMessages());
 
         sessionTools.populateModel(model, tabId);
         return "game";

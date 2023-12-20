@@ -1,6 +1,6 @@
 package mancala.engine.logic.state;
 
-public record TurnState(int[] pits, int inHand, int playerIndex, int pitIndex, StateType type) {
+public record TurnState(int[] pits, int inHand, int playerIndex, int pitIndex, StateType type, String gameIdentifier) {
 
     public TurnState addStone(int pitIndex) {
         TurnState clone = clone();
@@ -15,7 +15,7 @@ public record TurnState(int[] pits, int inHand, int playerIndex, int pitIndex, S
     }
 
     public TurnState clone() {
-        return new TurnState(pits, inHand, playerIndex, pitIndex, type);
+        return new TurnState(pits, inHand, playerIndex, pitIndex, type, gameIdentifier);
     }
 
     /**

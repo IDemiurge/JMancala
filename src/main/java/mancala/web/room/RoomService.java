@@ -1,6 +1,7 @@
 package mancala.web.room;
 
 import lombok.extern.slf4j.Slf4j;
+import mancala.common.utils.Log;
 import mancala.engine.logic.setup.GameSetupData;
 import mancala.web.game.IGameService;
 import mancala.common.exception.GameNotFoundException;
@@ -15,7 +16,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by Alexander on 12/12/2023
+ * 
  */
 @Service
 @Slf4j
@@ -53,14 +54,12 @@ public class RoomService implements IRoomService {
     @Override
     public String createNewGame(String hostUserName, MancalaGameMode gameMode) {
         String identifier = idGenerator.generateIdentifier(hostUserName, gameMode);
-        Room room = new Room(hostUserName);
+        Room room = new Room(identifier, hostUserName);
         room.setGameMode(gameMode);
         room.setGameSetup(provider.createSetup(gameMode));
         rooms.put(identifier, room);
-        room.setId(identifier);
 
         log.info("Game room created: " + room);
-        room.getLog().addMessage("TEST MSG");
         return identifier;
     }
 
@@ -85,7 +84,7 @@ public class RoomService implements IRoomService {
         if (room == null)
             throw new GameNotFoundException(gameId);
         GameSetupData data = new GameSetupData(gameId, room.getPlayers(), room.getGameMode());
-        GameState gameState = gameService.startGame(data, room.getLog());
+        GameState gameState = gameService.startGame(data);
         activeGames.put(gameId, gameState);
         log.info(room.getHostUserName() + "'s Game started with state: " + gameState);
         room.setStarted(true);
@@ -105,7 +104,7 @@ public class RoomService implements IRoomService {
         }
         Room room = rooms.get(gameId);
 
-        room.getLog().addMessage(playerName + " moved stones from pit #" +
+        Log.info(gameId, playerName + " moved stones from pit #" +
                 MancalaMathUtils.translateToPlayerPitIndex(pitIndex, currentPlayer, provider.createSetup(room.getGameMode())));
         return state;
     }

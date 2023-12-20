@@ -3,7 +3,7 @@ package mancala.engine.logic.setup;
 import java.util.Arrays;
 
 /**
- * Created by Alexander on 12/11/2023
+ * 
  */
 public class ClassicMancalaSetup implements MancalaSetup {
     public static final int STONES_PER_PIT = 6;

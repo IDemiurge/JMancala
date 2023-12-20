@@ -2,12 +2,15 @@ package mancala.web.room;
 
 import mancala.common.MancalaGameMode;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
- * Created by Alexander on 12/18/2023
+ * 
  */
 public class GameIdGenerator {
+    AtomicInteger counter = new AtomicInteger();
 
     public String generateIdentifier(String hostUserName, MancalaGameMode gameMode) {
-        return hostUserName + "-" + gameMode.abbreviation;
+        return "GoodGame_Number_" + counter.incrementAndGet() + "_Mode-" + gameMode.toString();
     }
 }

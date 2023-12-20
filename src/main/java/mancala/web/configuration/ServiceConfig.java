@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Comparator;
 
 /**
- * Created by Alexander on 12/17/2023
+ * 
  */
 @Configuration
 public class ServiceConfig {
