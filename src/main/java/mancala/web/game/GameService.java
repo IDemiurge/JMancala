@@ -2,12 +2,12 @@ package mancala.web.game;
 
 import lombok.extern.slf4j.Slf4j;
 import mancala.engine.logic.handler.GameHandler;
+import mancala.engine.logic.handler.IPitHandler;
 import mancala.engine.logic.handler.ITipHandler;
 import mancala.engine.logic.handler.PitHandler;
 import mancala.engine.logic.setup.GameSetupData;
 import mancala.engine.logic.setup.IMancalaSetupProvider;
 import mancala.engine.logic.setup.MancalaSetup;
-import mancala.engine.logic.state.GameLog;
 import mancala.engine.logic.state.GameState;
 import mancala.engine.logic.state.TurnState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class GameService implements IGameService {
 
     public GameHandler createGameHandler(GameSetupData data) {
         MancalaSetup setup = setupProvider.createSetup(data.mode());
-        PitHandler pitHandler = setupProvider.createPitHandler(data.mode());
+        IPitHandler pitHandler = setupProvider.createPitHandler(data.mode());
         ITipHandler tipHandler = setupProvider.createTipHandler(data.mode());
         return new GameHandler(data, pitHandler, tipHandler, setup);
 

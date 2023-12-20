@@ -27,6 +27,9 @@ body{
     max-width: 600px;
 }
 
+.offsetLeft {
+    margin-left: 70px;
+}
 .gameBoard {
     display: flex;
 }
@@ -79,18 +82,29 @@ box-shadow: inset 0px 20px 10px rgba(0,0,0,0.6);
     min-height: 150px;
     border: 2px solid #000;
     background-color: var(--salad);
+    display: flex;
+justify-content: center;
+ align-items: center;
 }
 .enemyMancala {
+    box-shadow: inset 0px 20px 10px rgba(0,0,0,0.6);
     border-radius: 50%;
     min-width: 70px;
     min-height: 150px;
     border: 2px solid #000;
     background-color: var(--lilac);
+    display: flex;
+justify-content: center;
+ align-items: center;
 }
 
+.mancalaEnemyText {
+    font-size: 24px;
+    color: #FFF;
+}
 .mancalaText {
-    font-size: 24px
-    color: #FFF
+    font-size: 24px;
+    color: #000;
 }
 
 

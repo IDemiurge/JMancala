@@ -9,31 +9,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static mancala.engine.logic.state.TurnState.StateType.*;
 
 /**
- * 
+ *
  */
-public class PitHandler {
+public class PitHandler implements IPitHandler{
 
     @Autowired
-    MancalaSetup setup;
+    private MancalaSetup setup;
 
     @Autowired
-    OutcomeHandler outcomeHandler;
+    private IOutcomeHandler outcomeHandler;
 
     @Autowired
-    IRulesHandler rulesHandler;
+    private IRulesHandler rulesHandler;
 
-    public PitHandler(MancalaSetup setup, OutcomeHandler outcomeHandler, IRulesHandler rulesHandler) {
+    public PitHandler(MancalaSetup setup, IOutcomeHandler outcomeHandler, IRulesHandler rulesHandler) {
         this.setup = setup;
         this.outcomeHandler = outcomeHandler;
         this.rulesHandler = rulesHandler;
     }
 
-
+    @Override
     public TurnState moveStones(GameState state, int pitIndex) {
         return checkGameOver(stepPlaceStone(createStartTurnState(state, pitIndex)));
     }
 
-    public TurnState stepPlaceStone(TurnState state) {
+    private TurnState stepPlaceStone(TurnState state) {
         if (state.inHand() == 1) {
             TurnState exitRuleState = rulesHandler.checkFinalStoneRules(state);
             if (exitRuleState != null)

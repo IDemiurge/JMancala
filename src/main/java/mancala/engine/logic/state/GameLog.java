@@ -13,7 +13,7 @@ public class GameLog {
         return messages;
     }
 
-    public boolean addMessage(String s) {
-        return messages.add(s);
+    public void addMessage(String s) {
+        messages.add(s);
     }
 }

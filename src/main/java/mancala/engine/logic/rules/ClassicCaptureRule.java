@@ -32,11 +32,8 @@ public class ClassicCaptureRule implements CaptureRule {
         if (state.pits()[state.pitIndex()] != 0) {
             return false; //only for empty pits
         }
-        //only for player's own pits
-        if (!setup.isPlayersPit(state.playerIndex(), state.pitIndex())){
-            return false;
-        }
-        return true;
+        //check if it's player's own pit
+        return setup.isPlayersPit(state.playerIndex(), state.pitIndex());
 
 
     }

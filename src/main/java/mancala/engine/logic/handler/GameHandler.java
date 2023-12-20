@@ -5,7 +5,6 @@ import mancala.common.utils.Log;
 import mancala.common.utils.MancalaStringUtils;
 import mancala.engine.logic.setup.GameSetupData;
 import mancala.engine.logic.setup.MancalaSetup;
-import mancala.engine.logic.state.GameLog;
 import mancala.engine.logic.state.GameState;
 import mancala.engine.logic.state.GameStateBuilder;
 import mancala.engine.logic.state.TurnState;
@@ -14,23 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ *
  */
 @Slf4j
-public class GameHandler {
+public class GameHandler implements IGameHandler {
     private final GameSetupData data;
-    private final PitHandler pitHandler;
+    private final IPitHandler pitHandler;
     private final ITipHandler tipHandler;
     private final MancalaSetup setup;
 
-    public GameHandler(GameSetupData data, PitHandler pitHandler, ITipHandler tipHandler, MancalaSetup setup) {
+    public GameHandler(GameSetupData data, IPitHandler pitHandler, ITipHandler tipHandler, MancalaSetup setup) {
         this.data = data;
         this.pitHandler = pitHandler;
         this.tipHandler = tipHandler;
         this.setup = setup;
     }
 
-
+    @Override
     public GameState start() {
         String message = "\nStarting a Game:" + data.identifier();
         log(message);
@@ -45,10 +44,12 @@ public class GameHandler {
                 .build();
     }
 
+    @Override
     public int nextPlayer(int playerIndex) {
         return (playerIndex + 1) % setup.numberOfPlayers();
     }
 
+    @Override
     public TurnState moveStones(GameState state, int pitIndex) {
 
         logState(state);
@@ -56,6 +57,7 @@ public class GameHandler {
         return turnState;
     }
 
+    @Override
     public GameState createNewGameState(TurnState turnState, GameState state) {
         GameStateBuilder builder = GameStateBuilder.compose(this, turnState, state);
 

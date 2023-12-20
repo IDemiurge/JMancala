@@ -1,7 +1,7 @@
 <div th:class="${ bottom? 'bottom' : 'top' }" th:fragment=tableFragment>
 
-  <div th:class="${ bottom? 'mancala' : 'enemyMancala'}"  th:if="${left == true}" >
-    <div class="mancalaText" th:text="|${gameState.pits[end]}|"></div>
+  <div th:class="${ bottom? 'mancala' : 'enemyMancala'}"   th:if="${left == true}" >
+    <div th:text="|${gameState.pits[end]}|" th:class="${ bottom? 'mancalaText' : 'mancalaEnemyText'}" ></div>
   </div>
 
   <div  th:class="${ bottom? 'gameBoard' : 'horizontalReverse' }" >
@@ -18,7 +18,7 @@
   </div>
   </div>
 
-  <div th:class="${ bottom? 'mancala' : 'enemyMancala'}"  th:if="${left != true}" >
-    <div class="mancalaText" th:text="|${gameState.pits[end]}|"></div>
+  <div th:class="${ bottom? 'mancala' : 'enemyMancala'}"   th:if="${left != true}" >
+    <div th:text="|${gameState.pits[end]}|" th:class="${ bottom? 'mancalaText' : 'mancalaEnemyText'}" ></div>
   </div>
 </div>

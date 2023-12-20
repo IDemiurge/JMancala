@@ -79,7 +79,7 @@ public class RoomController {
         if (roomService.getGameRoom(gameId).isStarted()) {
             return HtmxConsts.START_BUTTON_STARTED;
         }
-        if (roomService.isReadyToStart(gameId.toString())) {
+        if (roomService.isReadyToStart(gameId)) {
             return HtmxConsts.START_BUTTON_ENABLED;
         }
         return HtmxConsts.START_BUTTON_DISABLED;
@@ -101,7 +101,7 @@ public class RoomController {
             //TODO it's ID actually
             throw new GameNotFoundException(tabId);
         }
-        GameState state = roomService.startGame(gameId.toString());
+        GameState state = roomService.startGame(gameId);
 
         for (String player : state.players()) {
             sessionTools.setAttributeForUser(player, ModelAttributes.GAME_ID, gameId);

@@ -4,7 +4,6 @@ import mancala.common.utils.Log;
 import mancala.engine.logic.state.GameState;
 import mancala.web.room.RoomService;
 import mancala.web.utils.SessionTools;
-import mancala.web.render.ModelAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

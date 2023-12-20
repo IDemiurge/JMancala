@@ -17,7 +17,7 @@
     <div>
         <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=false, left=true, enabled=false, start=0, end=6, items=items)}"></div>
     </div>
-    <div>
+    <div class="offsetLeft">
         <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=true, left=false, enabled=${gameState.currentPlayer==1}, start=7, end=13, items=items)}"></div>
     </div>
         <h2 th:text="${gameState.players.get(1)}"></h2>
@@ -28,7 +28,7 @@
         <div >
             <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=false, left=true, enabled=false, start=7, end=13, items=items)}"></div>
         </div>
-        <div >
+        <div  class="offsetLeft">
             <div th:replace="~{fragments/tableFragment :: tableFragment(bottom=true, left=false, enabled=${gameState.currentPlayer==0}, start=0, end=6, items=items)}"></div>
         </div>
         <h2 th:text="${gameState.players.get(0)}"></h2>

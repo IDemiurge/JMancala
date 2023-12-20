@@ -1,7 +1,6 @@
 package mancala.web.game;
 
 import mancala.engine.logic.setup.GameSetupData;
-import mancala.engine.logic.state.GameLog;
 import mancala.engine.logic.state.GameState;
 
 public interface IGameService {

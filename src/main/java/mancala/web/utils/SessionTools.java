@@ -14,8 +14,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
  */
 @Slf4j
 public class SessionTools {
-    public final Map<String, Map<String, String>> cache = new ConcurrentHashMap();
-    public final Map<String, String> userCache = new ConcurrentHashMap();
+    public final Map<String, Map<String, String>> cache = new ConcurrentHashMap<>();
+    public final Map<String, String> userCache = new ConcurrentHashMap<>();
     public final Set<String> banned = new ConcurrentSkipListSet<>();
 
     public void populateModel(Model model, String tabId) {
