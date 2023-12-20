@@ -1,11 +1,13 @@
 package mancala;
 
 import lombok.extern.slf4j.Slf4j;
-import mancala.game.GameSetupData;
-import mancala.game.IGameService;
-import mancala.game.logic.setup.MancalaGameMode;
-import mancala.game.logic.state.GameState;
-import mancala.game.utils.MancalaStringUtils;
+import mancala.engine.logic.setup.GameSetupData;
+import mancala.web.configuration.MancalaConfig;
+import mancala.web.configuration.ServiceConfig;
+import mancala.web.game.IGameService;
+import mancala.common.MancalaGameMode;
+import mancala.engine.logic.state.GameState;
+import mancala.common.utils.MancalaStringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Created by Alexander on 12/11/2023
  */
-@SpringBootTest
+@SpringBootTest(classes={MancalaConfig.class, ServiceConfig.class})
 @Slf4j
 public class ClassicMancalaTests {
     @Autowired
