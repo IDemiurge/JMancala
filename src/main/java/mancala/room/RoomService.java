@@ -7,6 +7,7 @@ import mancala.game.exception.GameNotFoundException;
 import mancala.game.logic.setup.IMancalaSetupProvider;
 import mancala.game.logic.setup.MancalaGameMode;
 import mancala.game.logic.state.GameState;
+import mancala.game.utils.MancalaMathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +60,7 @@ public class RoomService implements IRoomService {
         room.setId(identifier);
 
         log.info("Game room created: " + room);
-        room.getLog().add("TEST MSG");
+        room.getLog().addMessage("TEST MSG");
         return identifier;
     }
 
@@ -95,12 +96,18 @@ public class RoomService implements IRoomService {
     @Override
     public GameState makeMove(String gameId, int pitIndex) {
         GameState state = activeGames.get(gameId);
+        int currentPlayer = state.currentPlayer();
+        String playerName = state.players().get(currentPlayer);
         state = gameService.makeMove(state, pitIndex);
         if (state.gameOver()) {
             activeGames.remove(gameId);
         } else {
             activeGames.put(gameId, state);
         }
+        Room room = rooms.get(gameId);
+
+        room.getLog().addMessage(playerName + " moved stones from pit #" +
+                MancalaMathUtils.translateToPlayerPitIndex(pitIndex, currentPlayer, provider.createSetup(room.getGameMode())));
         return state;
     }
 

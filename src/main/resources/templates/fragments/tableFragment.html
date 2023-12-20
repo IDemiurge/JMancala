@@ -1,9 +1,9 @@
 <div th:class="${ bottom? 'bottom' : 'top' }" th:fragment=tableFragment>
 
   <div th:class="${ bottom? 'mancala' : 'enemyMancala'}"  th:if="${left == true}" >
-    <label th:text="|Store: ${gameState.pits[end]}|">
-    </label>
+    <div class="mancalaText" th:text="|${gameState.pits[end]}|"></div>
   </div>
+
   <div  th:class="${ bottom? 'gameBoard' : 'horizontalReverse' }" >
   <div  th:each="i : ${#numbers.sequence(start, end-1)}">
       <form  hx-post="/makeMove" hx-target="#gameBoard" hx-swap="outerHTML">
@@ -19,7 +19,6 @@
   </div>
 
   <div th:class="${ bottom? 'mancala' : 'enemyMancala'}"  th:if="${left != true}" >
-    <label th:text="|Store: ${gameState.pits[end]}|">
-    </label>
+    <div class="mancalaText" th:text="|${gameState.pits[end]}|"></div>
   </div>
 </div>

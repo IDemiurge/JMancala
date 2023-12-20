@@ -15,12 +15,12 @@ sessionStorage.setItem('tabId', tabId);
 </head>
 <body>
 <div class="main-container">
-    <h1>--- JMANCALA by ALEX KAMEN ---</h1>
+    <h1 class="headerText">--- JMANCALA by ALEX KAMEN ---</h1>
 
     <div class="center-container">
-        <div id="loginSection" th:if="${tabId != null && login == null}">
+        <div id="loginSection" th:if="${tabId != null && username == null}">
             <form th:if="${login == null}" th:action="@{/register}" th:object="${userForm}" method="post">
-                <label class="error" th:if="${login_error != null}" for="login" th:text="${login_error}"></label>
+                <div class="errorText" th:if="${login_error != null}" for="login" th:text="${login_error}"></div>
                 <input id="login" type="text" th:field="*{userName}" placeholder="*{userName}" required>
                 <input type="hidden" name="tabId" th:value="${tabId}"/>
                 <button type="submit">Login</button>
@@ -28,7 +28,7 @@ sessionStorage.setItem('tabId', tabId);
 
         </div>
 
-        <div id="game-lobby" th:if="${login != null}">
+        <div id="game-lobby" th:if="${username != null}">
             <h1>Game Lobby</h1>
             <h2>Available Games:</h2>
             <form th:action="@{/createGame}" method="post">

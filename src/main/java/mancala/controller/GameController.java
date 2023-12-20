@@ -20,16 +20,28 @@ public class GameController {
     @Autowired
     SessionTools sessionTools;
 
+    @Autowired
+    MoveValidator moveValidator;
+
     @PostMapping("/makeMove")
     public String makeMove(@RequestParam("tabId") String tabId, @RequestParam("pitIndex") int pitIndex, Model model) {
+
         String gameId = sessionTools.getAttribute(tabId, GAME_ID);
+        String playerType = sessionTools.getAttribute(tabId, PLAYER_TYPE);
+        String username = sessionTools.getAttribute(tabId, USERNAME);
+
+        moveValidator.validate(username, pitIndex, gameGameRoomService.getGameRoom(gameId));
+
         GameState gameState = gameGameRoomService.makeMove(gameId, pitIndex);
         if (gameState.gameOver()) {
+            // model.addAttribute(VICTOR, gameState.victor());
+            //just display this and block board!
             //TODO properly clean up
+            // gameGameRoomService.ended(gameId);
             return "fragments/boardFragment";
         }
         model.addAttribute(GAME_STATE, gameState);
-        model.addAttribute(PLAYER_TYPE, sessionTools.getAttribute(tabId, PLAYER_TYPE));
+        model.addAttribute(PLAYER_TYPE, playerType);
         return "fragments/boardFragment";
     }
 
@@ -38,7 +50,6 @@ public class GameController {
         String gameId = sessionTools.getAttribute(tabId, GAME_ID);
         if (gameId != null) {
             GameState gameState = gameGameRoomService.getGameState(gameId);
-
             if (gameState != null) {
                 model.addAttribute(GAME_STATE, gameState);
                 model.addAttribute(GAME_LOG, gameGameRoomService.getGameRoom(gameId).getLog().getMessages());

@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.UUID;
 
-import static mancala.render.ModelAttributes.LOGIN;
-import static mancala.render.ModelAttributes.USERNAME;
+import static mancala.render.ModelAttributes.*;
 
 /**
  * Created by Alexander on 12/14/2023
@@ -51,11 +50,12 @@ public class HomeController {
         if (userStore.registerUser(userName)) {
             sessionTools.setAttribute(tabId, USERNAME, userName);
             sessionTools.setUserIdentifier(userName, tabId);
-            model.addAttribute(LOGIN, userName);
+            sessionTools.populateModel(model, tabId);
             List<Room> games = gameRoomService.fetchGames();
             model.addAttribute("games", games);
         } else {
             model.addAttribute("login_error", "Username already taken");
+            model.addAttribute(TAB_ID, tabId);
         }
         return "index";
     }

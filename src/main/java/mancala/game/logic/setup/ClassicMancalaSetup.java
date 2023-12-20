@@ -40,6 +40,11 @@ public class ClassicMancalaSetup implements MancalaSetup {
     }
 
     @Override
+    public int[] stores() {
+        return STORES;
+    }
+
+    @Override
     public int numberOfPlayers() {
         return PLAYERS;
     }

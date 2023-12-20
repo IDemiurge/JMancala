@@ -1,21 +1,31 @@
+:root {
+  --salad: #ABD33F;
+  --lilac: #673FD4;
+}
 body{
     background-color: grey;
 }
 
+.mainText {
+    font-size: 14px
+    color: #FFF
+}
+.errorText {
+    font-size: 14px
+    color: red
+}
 .main-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 50vh;
+    height: 100vh;
 }
 
 .center-container {
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
 }
-
-
 
 .gameBoard {
     display: flex;
@@ -28,49 +38,69 @@ body{
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    height: 200px;
 }
 .top {
     display: flex;
     flex-direction: row;
     justify-content: flex-start; /* Aligns all children to the bottom */
-    height: 200px;
+
 }
 
+.pit {
+background: #79430d;
+border-radius: 50%;
+box-shadow: inset 0px 20px 10px rgba(0,0,0,0.6);
+    width: 50px;
+    height: 50px;
+    border: 3px solid #A65E2E;
+    text-align: center;
+    vertical-align: middle;
+}
 .pit:disabled:hover {
-     background-color: grey; /* Same as the disabled state, no change on hover */
+     background: #79430d;
  }
 .pit:hover {
-     background-color: darkblue; /* Darker background on hover */
+     background-color: var(--salad); /* Darker background on hover */
      /* Other hover styles */
  }
 .pit:active {
-     background-color: green; /* Darker background on hover */
+     background-color: var(--lilac); /* Darker background on hover */
      /* Other hover styles */
  }
-.pit {
-    width: 50px;
-    height: 50px;
-    border: 1px solid #000;
-    text-align: center;
-    vertical-align: middle;
-}
 .mancala {
+box-shadow: inset 0px 20px 10px rgba(0,0,0,0.6);
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 50%;
     min-width: 70px;
     min-height: 150px;
     border: 2px solid #000;
     text-align: center;
     vertical-align: middle;
-    background-color: lightblue;
+    background-color: var(--salad);
 }
 
+.pitText {
+    font-size: 16px
+    color: #FFF
+}
+.mancalaText {
+    font-size: 24px
+    margin-left: auto;
+    margin-right: auto;
+    width: 20px;
+    color: #FFF
+}
 .enemyMancala {
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 50%;
     min-width: 70px;
     min-height: 150px;
     border: 2px solid #000;
     text-align: center;
     vertical-align: middle;
-    background-color: pink;
+    background-color: var(--lilac);
 }
         .game-lobby {
             display: grid;
@@ -85,9 +115,7 @@ body{
             width: 100%;
             padding: 10px;
         }
-
-
-
-  .flip-vertical {
-  transform: rotateX(180deg);
-  }
+.centered_label {
+    display: inline-block;
+    text-align: center;
+}

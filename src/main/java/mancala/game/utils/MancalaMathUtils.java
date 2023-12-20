@@ -1,5 +1,7 @@
 package mancala.game.utils;
 
+import mancala.game.logic.setup.MancalaSetup;
+
 /**
  * Created by Alexander on 12/13/2023
  */
@@ -17,5 +19,9 @@ public class MancalaMathUtils {
 
     public static int getPlayerStoreIndex(int pitsPerPlayer, int playerIndex) {
         return pitsPerPlayer * (playerIndex + 1) + playerIndex;
+    }
+
+    public static int translateToPlayerPitIndex(int pitIndex, int currentPlayer, MancalaSetup setup) {
+        return (pitIndex-currentPlayer)%setup.pitsPerPlayer();
     }
 }

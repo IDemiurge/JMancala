@@ -17,9 +17,7 @@
     <p></p>
     <div th:if="${gameState == null && hostWaiting == true}">
         <script th:inline="javascript">
-var tabId = /*[[${tabId}]]*/ 'defaulttabId';
- console.log("TAB ID RELOADED: ", tabId);
-sessionStorage.setItem('tabId', tabId);
+sessionStorage.setItem('tabId', /*[[${tabId}]]*/ 'defaulttabId');
     </script>
         <div th:if="${gameState == null && hostWaiting == true}"
              class="HX" id="startCheck"  hx-get="/checkGameReadyToStart" hx-trigger="every 1s" hx-swap="innerHTML">
@@ -37,11 +35,11 @@ sessionStorage.setItem('tabId', tabId);
         <script src="../js/setup-hx-vals.js"></script>
     </div>
     <script th:inline="javascript">
-var tabId = /*[[${tabId}]]*/ 'defaulttabId';
- console.log("TAB ID RELOADED: ", tabId);
-sessionStorage.setItem('tabId', tabId);
+sessionStorage.setItem('tabId', /*[[${tabId}]]*/ 'defaulttabId');
     </script>
     <div th:if="${hostWaiting != true}">
+
+        <label th:if="${gameState==null}">Waiting for host to start...</label>
         <div class="HX"  hx-get="/syncGameState" hx-trigger="every 2s" hx-swap="innerHTML">
             <div></div>
         </div>
@@ -49,10 +47,10 @@ sessionStorage.setItem('tabId', tabId);
         <script src="../js/setup-hx-vals.js"></script>
     </div>
 
-    <div  id="home" >
-        <form th:action="@{/back}" method="get">
-            <button type="submit">Back Home</button>
-        </form>
+<!--    <div  id="home" >-->
+<!--        <form th:action="@{/back}" method="get">-->
+<!--            <button type="submit">Back Home</button>-->
+<!--        </form>-->
 
         <script th:src="@{../js/setup-forms-tab-id-param.js}">
         </script>

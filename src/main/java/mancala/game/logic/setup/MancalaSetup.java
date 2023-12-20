@@ -3,6 +3,8 @@ package mancala.game.logic.setup;
 public interface MancalaSetup {
     int[] startingPits();
 
+    int[] stores();
+
     //TODO this is both the minimum and maximum number of players, could be more flexible?
     int numberOfPlayers();
 

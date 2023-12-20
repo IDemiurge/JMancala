@@ -1,5 +1,6 @@
 package mancala.configuration;
 
+import mancala.controller.MoveValidator;
 import mancala.room.GameIdGenerator;
 import mancala.room.Room;
 import mancala.room.RoomSorter;
@@ -16,7 +17,12 @@ import java.util.Comparator;
 public class ServiceConfig {
 
     @Bean
-    public GameIdGenerator idGenerator(){
+    public MoveValidator moveValidator() {
+        return new MoveValidator();
+    }
+
+    @Bean
+    public GameIdGenerator idGenerator() {
         return new GameIdGenerator();
     }
 
@@ -26,7 +32,7 @@ public class ServiceConfig {
     }
 
     @Bean
-    public SessionTools sessionTools(){
+    public SessionTools sessionTools() {
         return new SessionTools();
     }
 }
